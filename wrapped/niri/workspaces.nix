@@ -33,6 +33,7 @@
         matches = [
           { app-id = "chrome-cinhimbnkkaeohfgghhklpknlkffjgod-Default"; }
           { app-id = "vesktop"; }
+          { app-id = "discord"; }
           { app-id = "com.github.th_ch.youtube_music"; }
         ];
         open-on-workspace = "chat";
@@ -49,7 +50,10 @@
       }
 
       {
-        matches = [ { app-id = "vesktop"; } ];
+        matches = [
+          { app-id = "vesktop"; }
+          { app-id = "discord"; }
+        ];
         default-column-width = {
           proportion = 1.0;
         };
