@@ -10,7 +10,6 @@
           xwayland-satellite
           jq
           kdePackages.kirigami.unwrapped
-          seahorse   
         ];
         v2-settings = true;
         imports = with self.nixosModules; [

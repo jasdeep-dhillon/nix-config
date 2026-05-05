@@ -7,6 +7,7 @@
         inputs.vibepanel.packages.${pkgs.stdenv.hostPlatform.system}.default
         self.packages.${pkgs.stdenv.hostPlatform.system}.fuzzel
         pkgs.swaybg
+        pkgs.ddcutil
       ];
       settings.spawn-at-startup = [
         [
