@@ -11,7 +11,7 @@
             layer = "overlay";
             dpi-aware = "auto";
             show-actions = true;
-            # launch-prefix = lib.getExe pkgs.runapp;
+            launch-prefix = lib.getExe pkgs.runapp;
             width = 60;
             # prompt = "'Launch: '";
             placeholder = "Search";
