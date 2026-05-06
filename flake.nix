@@ -43,6 +43,7 @@
       url = "github:AvengeMedia/dms-plugin-registry";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hypridle.url = "github:hyprwm/hypridle";
   };
 
   outputs =

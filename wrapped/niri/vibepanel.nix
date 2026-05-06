@@ -1,17 +1,17 @@
-{ self, inputs, ... }:
+{ self, ... }:
 {
   flake.nixosModules.niriShell =
     { pkgs, lib, ... }:
     {
       extraPackages = [
-        inputs.vibepanel.packages.${pkgs.stdenv.hostPlatform.system}.default
+        self.packages.${pkgs.stdenv.hostPlatform.system}.vibepanel
         self.packages.${pkgs.stdenv.hostPlatform.system}.fuzzel
         pkgs.swaybg
         pkgs.ddcutil
       ];
       settings.spawn-at-startup = [
         [
-          (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.swayidle)
+          (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.hypridle)
         ]
         [
           (lib.getExe pkgs.swaybg)
