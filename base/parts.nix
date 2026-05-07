@@ -1,6 +1,21 @@
 { inputs, ... }:
 {
   imports = [ inputs.home-manager.flakeModules.home-manager ];
+
+  options = {
+    flake = inputs.flake-parts.lib.mkSubmoduleOptions {
+      wrappersModules = inputs.nixpkgs.lib.mkOption {
+        default = { };
+      };
+      wallpaper = inputs.nixpkgs.lib.mkOption {
+        default = { };
+      };
+      avatar = inputs.nixpkgs.lib.mkOption {
+        default = { };
+      };
+    };
+  };
+
   config = {
     systems = [
       # "aarch64-darwin"

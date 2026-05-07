@@ -1,6 +1,6 @@
 { self, inputs, ... }:
 {
-  flake.vibepanel = inputs.wrapper-modules.lib.wrapModule (
+  flake.wrappersModules.vibepanel = inputs.wrapper-modules.lib.wrapModule (
     {
       config,
       wlib,
@@ -44,7 +44,7 @@
       ...
     }:
     {
-      packages.vibepanel = self.vibepanel.wrap {
+      packages.vibepanel = self.wrappersModules.vibepanel.wrap {
         inherit pkgs;
         package = inputs.vibepanel.packages.${pkgs.stdenv.hostPlatform.system}.default;
         settings = {
