@@ -1,50 +1,54 @@
-{ inputs, ... }:
+{ self, inputs, ... }:
 {
-  # flake.wrappedModule.vibepanel = inputs.wrapper-modules.lib.evalModule (
-  #   {
-  #     config,
-  #     wlib,
-  #     lib,
-  #     pkgs,
-  #     ...
-  #   }:
-  #   let
-  #     tomlFmt = pkgs.format.toml { };
-  #   in
-  #   {
-  #     imports = [ wlib.modules.default ];
-  #     options = {
-  #       settings = lib.mkOption {
-  #         type = tomlFmt.type;
-  #         default = { };
-  #         description = ''
-  #           Configuration of Vibepanel
-  #           See <https://github.com/prankstr/vibepanel/wiki/Configuration>
-  #         '';
-  #       };
-  #     };
-  #     config = {
-  #       flags."--config" = config.constructFiles.generatedConfig.path;
-  #       constructFiles.generatedConfig = {
-  #         content = tomlFmt.generate config.constructFiles.relPath config.settings;
-  #         relPath = "${config.binName}-config.toml";
-  #         # builder = ''
-  #         #   mkdir -p "$(dirname "$2")" && ${pkgs.remarshal}/bin/json2toml "$1" "$2"
-  #         # '';
-  #       };
-  #       package = lib.mkDefault inputs.vibepanel.packages.${pkgs.stdenv.hostPlatform.system}.default;
-  #       meta.maintainers = [ "Arc" ];
-  #     };
-  #   }
-  # );
-  perSystem =
-    { pkgs, self', lib, ... }:
+  flake.vibepanel = inputs.wrapper-modules.lib.wrapModule (
     {
-      packages.vibepanel = inputs.wrapper-modules.lib.wrapPackage {
-        inherit pkgs;
-        package = inputs.vibepanel.packages.${pkgs.stdenv.hostPlatform.system}.default;
-        flags = {
-          "--config" = (pkgs.formats.toml { }).generate "vibepanel.toml" {
+      config,
+      wlib,
+      lib,
+      pkgs,
+      ...
+    }:
+    let
+      tomlFmt = pkgs.formats.toml { };
+    in
+    {
+      imports = [ wlib.modules.default ];
+      options = {
+        settings = lib.mkOption {
+          type = tomlFmt.type;
+          default = { };
+          description = ''
+            Configuration of Vibepanel
+            See <https://github.com/prankstr/vibepanel/wiki/Configuration>
+          '';
+        };
+      };
+      config = {
+        flags."--config" = config.constructFiles.generatedConfig.path;
+        constructFiles.generatedConfig = {
+          content = builtins.readFile (
+            toString (tomlFmt.generate config.constructFiles.generatedConfig.relPath config.settings)
+          );
+          relPath = "${config.binName}.toml";
+        };
+        package = lib.mkDefault inputs.vibepanel.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        meta.maintainers = [ "Arc" ];
+      };
+    }
+  );
+  perSystem =
+    {
+      pkgs,
+      self',
+      lib,
+      ...
+    }:
+    {
+      packages.vibepanel =
+        (self.vibepanel.apply {
+          inherit pkgs;
+          package = inputs.vibepanel.packages.${pkgs.stdenv.hostPlatform.system}.default;
+          settings = {
             bar = {
               position = "top";
               size = 30;
@@ -87,9 +91,7 @@
                 icon = "apps";
                 # label = "Launcher";
                 tooltip = "Fuzzel";
-                on_click = "pkill -x fuzzel || ${
-                  lib.getExe self'.packages.fuzzel
-                }";
+                on_click = "pkill -x fuzzel || ${lib.getExe self'.packages.fuzzel}";
                 on_click_right = ''
                   pkill -x fuzzel ||
                   sh -c "$(fuzzel --lines 0 -d -p 'Run: ')"
@@ -129,7 +131,6 @@
             };
             advanced.compositor = "niri";
           };
-        };
-      };
+        }).wrapper;
     };
 }

@@ -1,6 +1,6 @@
 { self, inputs, ... }:
 {
-  flake.wrapperModules.hypridle = inputs.wrapper-modules.lib.wrapModule (
+  flake.hypridle = inputs.wrapper-modules.lib.wrapModule (
     {
       config,
       wlib,
@@ -182,7 +182,7 @@
     { inputs', pkgs, ... }:
     {
       packages.hypridle =
-        (self.wrapperModule.hypridle.apply {
+        (self.hypridle.apply {
           inherit pkgs;
           package = inputs'.hypridle.packages.default;
           settings = {
