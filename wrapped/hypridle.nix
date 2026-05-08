@@ -179,14 +179,14 @@
   );
 
   perSystem =
-    { inputs', pkgs, ... }:
+    { self', inputs', pkgs, lib, ... }:
     {
       packages.hypridle = self.wrappersModules.hypridle.wrap {
         inherit pkgs;
         package = inputs'.hypridle.packages.default;
         settings = {
           general = {
-            lock_cmd = "loginctl lock-session";
+            lock_cmd = "pidof hyprlock || ${lib.getExe self'.packages.hyprlock}";
             before_sleep_cmd = "loginctl lock-session";
             after_sleep_cmd = "niri msg action power-on-monitors";
             inhibit_sleep = 3;
@@ -197,9 +197,13 @@
               on-timeout = "loginctl lock-session";
             }
             {
-              timeout = 330;
+              timeout = 600;
               on-timeout = "niri msg action power-off-monitors";
               on-resume = "niri msg action power-on-monitors";
+            }
+            {
+              timeout = 900;
+              on-timeout = "systemctl suspend-then-hibernate";
             }
           ];
         };
