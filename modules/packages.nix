@@ -35,7 +35,7 @@
         snapshot
         zathura
         kdePackages.okular
-        resources
+        mission-center
         video-trimmer
         bitwarden-desktop
         vesktop
