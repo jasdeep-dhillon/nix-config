@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.nixosModules.niriShell =
+  flake.nixosModules.ignore =
     { pkgs, lib, ... }:
     {
       extraPackages = [ inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default ];
@@ -9,12 +9,11 @@
         DMS_DISABLE_CAVA = "1";
       };
       settings.spawn-at-startup = [
-        [ "echo test" ]
-        #   [
-        #     (lib.getExe pkgs.runapp)
-        #     (lib.getExe inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default)
-        #     "run"
-        #   ]
+        [
+          (lib.getExe pkgs.runapp)
+          (lib.getExe inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default)
+          "run"
+        ]
       ];
 
       settings.switch-events = {

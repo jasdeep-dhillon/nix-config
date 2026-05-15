@@ -66,4 +66,4 @@ test-lain:
 
 # Clear unused packages from nix store
 clean:
-    nh clean
+    nh clean all

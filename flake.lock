@@ -649,6 +649,27 @@
         "type": "github"
       }
     },
+    "noctalia-v5": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1778819492,
+        "narHash": "sha256-iQHeDYCcaYw3HUKCj279Icx4fZ3w/5YkJzDvIap8Fz4=",
+        "owner": "noctalia-dev",
+        "repo": "noctalia-shell",
+        "rev": "698f9be3599351ebd7356ab7ababff4f9d1edf7a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "ref": "v5",
+        "repo": "noctalia-shell",
+        "type": "github"
+      }
+    },
     "nur": {
       "inputs": {
         "flake-parts": [
@@ -732,6 +753,7 @@
         "nixpkgs": "nixpkgs_3",
         "noctalia": "noctalia",
         "noctalia-plugins": "noctalia-plugins",
+        "noctalia-v5": "noctalia-v5",
         "run0-sudo-shim": "run0-sudo-shim",
         "stylix": "stylix",
         "vibepanel": "vibepanel",

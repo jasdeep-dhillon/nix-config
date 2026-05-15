@@ -1,6 +1,6 @@
 { self, ... }:
 {
-  flake.nixosModules.niriShell =
+  flake.nixosModules.ignore =
     { pkgs, lib, ... }:
     {
       extraPackages = [

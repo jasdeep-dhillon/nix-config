@@ -1,21 +1,23 @@
 { self, ... }:
 {
-  flake.nixosModules.niriShell =
+  flake.nixosModules.ignore =
     { pkgs, lib, ... }:
+    let
+      noctalia = lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell;
+    in
     {
       extraPackages = [ self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell ];
       settings = {
         spawn-at-startup = [
           [
-            (lib.getExe pkgs.runapp)
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
           ]
         ];
       };
       settings.switch-events = {
         lid-close = {
           spawn = [
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
             "ipc"
             "call"
             "toast"
@@ -27,7 +29,7 @@
         };
         lid-open = {
           spawn = [
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
             "ipc"
             "call"
             "toast"
@@ -40,13 +42,13 @@
       };
       settings.binds = {
         "Mod+F5" = {
-          spawn = [ (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell) ];
+          spawn = [ noctalia ];
         };
         "Mod+Space" = _: {
           props.cooldown-ms = 200;
           props.hotkey-overlay-title = "Launcher";
           content.spawn = [
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
             "ipc"
             "call"
             "launcher"
@@ -57,7 +59,7 @@
           props.repeat = false;
           props.hotkey-overlay-title = "Clipboard";
           content.spawn = [
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
             "ipc"
             "call"
             "launcher"
@@ -68,7 +70,7 @@
           props.repeat = false;
           props.hotkey-overlay-title = "Clipboard";
           content.spawn = [
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
             "ipc"
             "call"
             "launcher"
@@ -79,7 +81,7 @@
           props.repeat = false;
           props.hotkey-overlay-title = "Emoji Picker";
           content.spawn = [
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
             "ipc"
             "call"
             "launcher"
@@ -90,7 +92,7 @@
           props.repeat = false;
           props.hotkey-overlay-title = "Audio Picker";
           content.spawn = [
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
             "ipc"
             "call"
             "volume"
@@ -101,7 +103,7 @@
           props.repeat = false;
           props.hotkey-overlay-title = "Settings";
           content.spawn = [
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
             "ipc"
             "call"
             "settings"
@@ -112,7 +114,7 @@
           props.repeat = false;
           props.hotkey-overlay-title = "Lock Screen";
           content.spawn = [
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
             "ipc"
             "call"
             "lockScreen"
@@ -123,7 +125,7 @@
           props.repeat = false;
           props.hotkey-overlay-title = "Power Menu";
           content.spawn = [
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
             "ipc"
             "call"
             "sessionMenu"
@@ -134,7 +136,7 @@
           props.repeat = false;
           props.hotkey-overlay-title = "Control Center";
           content.spawn = [
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
             "ipc"
             "call"
             "controlCenter"
@@ -145,7 +147,7 @@
           props.repeat = false;
           props.hotkey-overlay-title = "Notifications";
           content.spawn = [
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
             "ipc"
             "call"
             "notifications"
@@ -156,7 +158,7 @@
           props.repeat = false;
           props.hotkey-overlay-title = "Clear Notifications";
           content.spawn = [
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
             "ipc"
             "call"
             "notifications"
@@ -167,7 +169,7 @@
         XF86MonBrightnessUp = _: {
           props.allow-when-locked = true;
           content.spawn = [
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
             "ipc"
             "call"
             "brightness"
@@ -177,7 +179,7 @@
         "Mod+XF86AudioRaiseVolume" = _: {
           props.allow-when-locked = true;
           content.spawn = [
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
             "ipc"
             "call"
             "brightness"
@@ -187,7 +189,7 @@
         "Mod+XF86AudioLowerVolume" = _: {
           props.allow-when-locked = true;
           content.spawn = [
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
             "ipc"
             "call"
             "brightness"
@@ -197,7 +199,7 @@
         XF86MonBrightnessDown = _: {
           props.allow-when-locked = true;
           content.spawn = [
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
             "ipc"
             "call"
             "brightness"
@@ -207,7 +209,7 @@
         XF86AudioPlay = _: {
           props.allow-when-locked = true;
           content.spawn = [
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
             "ipc"
             "call"
             "media"
@@ -217,7 +219,7 @@
         XF86AudioStop = _: {
           props.allow-when-locked = true;
           content.spawn = [
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
             "ipc"
             "call"
             "media"
@@ -227,7 +229,7 @@
         XF86AudioPrev = _: {
           props.allow-when-locked = true;
           content.spawn = [
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
             "ipc"
             "call"
             "media"
@@ -237,7 +239,7 @@
         XF86AudioNext = _: {
           props.allow-when-locked = true;
           content.spawn = [
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell)
+            noctalia
             "ipc"
             "call"
             "media"

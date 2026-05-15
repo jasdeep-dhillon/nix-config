@@ -68,7 +68,7 @@
             autoHideDelay = 500;
             autoShowDelay = 150;
             backgroundOpacity = 0.75;
-            barType = "simple";
+            barType = "floating";
             capsuleColorKey = "none";
             capsuleOpacity = 0.75;
             contentPadding = 4;
@@ -80,7 +80,7 @@
             frameThickness = 4;
             hideOnOverview = false;
             marginHorizontal = 2;
-            marginVertical = 1;
+            marginVertical = 2;
             middleClickAction = "launcherPanel";
             middleClickCommand = "";
             middleClickFollowMouse = true;
