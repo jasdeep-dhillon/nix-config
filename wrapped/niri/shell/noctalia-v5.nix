@@ -54,13 +54,15 @@
         "Mod+Space" = _: {
           props.cooldown-ms = 200;
           props.hotkey-overlay-title = "Launcher";
-          content.spawn = [
-            # noctalia
-            # "msg"
-            # "panel-toggle"
-            # "launcher"
-            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.fuzzel)
-          ];
+          # content.spawn = [
+          #   # noctalia
+          #   # "msg"
+          #   # "panel-toggle"
+          #   # "launcher"
+          # ];
+          content.spawn-sh = "pkill -x fuzzel || ${
+            lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.fuzzel
+          }";
         };
         "Mod+V" = _: {
           props.repeat = false;
@@ -236,7 +238,7 @@
       settings.layer-rules = [
         {
           matches = [
-            { layer = "overlay"; }
+            { namespace = "launcher"; }
           ];
           background-effect = {
             blur = true;
@@ -246,17 +248,9 @@
         }
         {
           matches = [
-            { namespace = "^noctalia-overview*"; }
+            { namespace = "^noctalia-backdrop*"; }
           ];
           place-within-backdrop = true;
-        }
-        {
-          matches = [
-            { namespace = "^noctalia-(background|launcher-overlay|dock)-.*$"; }
-            # { namespace = "^noctalia-osd.*$"; }
-            # { namespace = "^noctalia-toast.*$"; }
-            # { namespace = "^noctalia-notifications.*$"; }
-          ];
         }
       ];
     };

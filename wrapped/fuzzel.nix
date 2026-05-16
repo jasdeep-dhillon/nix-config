@@ -13,12 +13,11 @@
             show-actions = true;
             launch-prefix = lib.getExe pkgs.runapp;
             width = 60;
-            # prompt = "'Launch: '";
+            # prompt = "'Search > '";
             placeholder = "Search";
-            horizontal-pad = 60;
-            vertical-pad = 32;
-            inner-pad = 12;
-            line-height = 32;
+            vertical-pad = 16;
+            inner-pad = 8;
+            line-height = 24;
             keyboard-focus = "on-demand";
           };
           colors = {
@@ -38,7 +37,6 @@
             width = 2;
             selection-radius = 8;
           };
-
         };
       };
     };
