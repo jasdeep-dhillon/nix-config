@@ -60,6 +60,9 @@
             background_color = "#1e1e2e";
             outline = false;
           };
+          audio = {
+            allow_overdrive = true;
+          };
           widgets = {
             left = [
               "custom-fuzzel"
