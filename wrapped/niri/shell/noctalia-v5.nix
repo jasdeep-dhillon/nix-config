@@ -5,6 +5,7 @@
     { pkgs, lib, ... }:
     let
       noctalia = lib.getExe inputs.noctalia-v5.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      monitor = "eDP-1";
     in
     {
       extraPackages = [
@@ -54,10 +55,11 @@
           props.cooldown-ms = 200;
           props.hotkey-overlay-title = "Launcher";
           content.spawn = [
-            noctalia
-            "msg"
-            "panel-toggle"
-            "launcher"
+            # noctalia
+            # "msg"
+            # "panel-toggle"
+            # "launcher"
+            (lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.fuzzel)
           ];
         };
         "Mod+V" = _: {
@@ -77,7 +79,7 @@
             pkill -x fuzzel ||
             sh -c "$(${
               lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.fuzzel
-            } --lines 0 -d -p 'Run: ')"
+            } --lines 0 -d -p 'Run: ' --placeholder=)"
           '';
         };
         "Mod+Period" = _: {
@@ -145,28 +147,20 @@
         #   props.hotkey-overlay-title = "Notifications";
         #   content.spawn = [
         #     noctalia
-        #     "ipc"
+        #     "msg"
         #     "call"
         #     "notifications"
         #     "toggleHistory"
         #   ];
         # };
-        "Mod+Comma" = _: {
-          props.repeat = false;
-          props.hotkey-overlay-title = "Clear Notifications";
-          content.spawn = [
-            noctalia
-            "msg"
-            "notification-clear-history"
-          ];
-        };
 
         XF86MonBrightnessUp = _: {
           props.allow-when-locked = true;
           content.spawn = [
             noctalia
+            "msg"
             "brightness-up"
-            "all"
+            monitor
             "2"
           ];
         };
@@ -174,8 +168,9 @@
           props.allow-when-locked = true;
           content.spawn = [
             noctalia
+            "msg"
             "brightness-up"
-            "all"
+            monitor
             "2"
           ];
         };
@@ -183,8 +178,9 @@
           props.allow-when-locked = true;
           content.spawn = [
             noctalia
+            "msg"
             "brightness-down"
-            "all"
+            monitor
             "2"
           ];
         };
@@ -192,8 +188,9 @@
           props.allow-when-locked = true;
           content.spawn = [
             noctalia
+            "msg"
             "brightness-down"
-            "all"
+            monitor
             "2"
           ];
         };
@@ -237,6 +234,16 @@
         };
       };
       settings.layer-rules = [
+        {
+          matches = [
+            { layer = "overlay"; }
+          ];
+          background-effect = {
+            blur = true;
+            xray = true;
+          };
+          geometry-corner-radius = 12;
+        }
         {
           matches = [
             { namespace = "^noctalia-overview*"; }

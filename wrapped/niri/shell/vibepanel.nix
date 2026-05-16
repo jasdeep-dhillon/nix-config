@@ -218,7 +218,6 @@
         {
           matches = [
             { layer = "overlay"; }
-            # { namespace = "launcher"; }
           ];
           background-effect = {
             blur = true;
