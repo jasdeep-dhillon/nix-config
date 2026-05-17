@@ -1,15 +1,15 @@
-{ self, inputs, ... }:
+{ self, ... }:
 
 {
   flake.nixosModules.niriShell =
     { pkgs, lib, ... }:
     let
-      noctalia = lib.getExe inputs.noctalia-v5.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      noctalia = lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-v5;
       monitor = "eDP-1";
     in
     {
       extraPackages = [
-        inputs.noctalia-v5.packages.${pkgs.stdenv.hostPlatform.system}.default
+        self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-v5
         self.packages.${pkgs.stdenv.hostPlatform.system}.fuzzel
         pkgs.ddcutil
       ];
