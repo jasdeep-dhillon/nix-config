@@ -15,6 +15,7 @@
         hyprls
         kdePackages.qtdeclarative
         jsonfmt
+        clang-tools
       ];
     };
 }
