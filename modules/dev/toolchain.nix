@@ -17,10 +17,12 @@
         bun
         nodejs
         rustup
-        clang
         python315FreeThreading
         jdk25
         maven
+
+        clang
+        meson
       ];
     };
 }
