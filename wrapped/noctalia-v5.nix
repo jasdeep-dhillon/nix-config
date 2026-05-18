@@ -108,9 +108,9 @@
               widget_spacing = 4;
             };
           };
-          brightness = {
-            enable_ddcutil = true;
-          };
+          # brightness = {
+          #   enable_ddcutil = true;
+          # };
           desktop_widgets = {
             enabled = false;
           };
@@ -149,6 +149,8 @@
             avatar_path = self.avatar;
             corner_radius_scale = 1.45;
             font_family = "Inter";
+            password_style = "random";
+            polkit_agent = true;
             settings_show_advanced = true;
             telemetry_enabled = true;
             animation = {

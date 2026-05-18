@@ -17,6 +17,5 @@
       theme
     ];
     services.kdeconnect.enable = true;
-    services.hyprpolkitagent.enable = true;
   };
 }
