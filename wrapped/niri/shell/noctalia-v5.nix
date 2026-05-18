@@ -54,15 +54,13 @@
         "Mod+Space" = _: {
           props.cooldown-ms = 200;
           props.hotkey-overlay-title = "Launcher";
-          # content.spawn = [
-          #   # noctalia
-          #   # "msg"
-          #   # "panel-toggle"
-          #   # "launcher"
-          # ];
-          content.spawn-sh = "pkill -x fuzzel || ${
-            lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.fuzzel
-          }";
+          content.spawn = [
+            noctalia
+            "msg"
+            "panel-toggle"
+            "launcher"
+          ];
+
         };
         "Mod+V" = _: {
           props.repeat = false;
