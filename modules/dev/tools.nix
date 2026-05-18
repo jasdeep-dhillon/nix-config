@@ -12,6 +12,9 @@
         zellij
         hyperfine
         tokei
+
+        perf
+        valgrind
       ];
     };
 

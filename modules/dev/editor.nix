@@ -13,6 +13,7 @@
       # IDE / Text Editors
       home.packages = with pkgs; [
         vscode-fhs
+        jetbrains.clion
         # jetbrains.datagrip
         # jetbrains.idea
       ];
