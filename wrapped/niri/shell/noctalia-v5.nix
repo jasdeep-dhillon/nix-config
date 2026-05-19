@@ -48,6 +48,12 @@
       #   };
       # };
       settings.binds = {
+        "Mod+Shift+F5" = {
+          spawn = [
+            "pkill"
+            "noctalia"
+          ];
+        };
         "Mod+F5" = {
           spawn = [ noctalia ];
         };

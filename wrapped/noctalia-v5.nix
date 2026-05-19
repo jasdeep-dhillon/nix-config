@@ -192,6 +192,7 @@
             };
           };
           theme = {
+            mode = "auto";
             # builtin = "Catppuccin";
             # community_palette = "Catppuccin Lavender";
             # source = "community";
@@ -257,7 +258,7 @@
             mOnPrimary = "#11111b";
             mSecondary = "#f5bde6";
             mOnSecondary = "#11111b";
-            mTertiary = "#c6a0f6";
+            mTertiary = "#a6adc8";
             mOnTertiary = "#11111b";
             mError = "#f38ba8";
             mOnError = "#11111b";
@@ -267,7 +268,7 @@
             mOnSurfaceVariant = "#a3b4eb";
             mOutline = "#4c4f69";
             mShadow = "#11111b";
-            mHover = "#c6a0f6";
+            mHover = "#a6adc8";
             mOnHover = "#11111b";
             terminal = {
               foreground = "#cdd6f4";
