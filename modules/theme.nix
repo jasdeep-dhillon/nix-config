@@ -15,6 +15,18 @@
     };
   flake.homeModules.theme =
     { pkgs, lib, ... }:
+    let 
+      moga-cursor = pkgs.stdenvNoCC.mkDerivation {
+        name = "Moga-Cursor";
+        src = ../cursor-theme;
+        installPhase = ''
+          runHook preInstall
+          mkdir -p $out/share/icons/Moga-Cursor
+          cp -r * $out/share/icons/Moga-Cursor
+          runHook postInstall
+        '';
+      };
+    in
     {
       imports = [ inputs.stylix.homeModules.stylix ];
       home.file."Pictures/Wallpapers".source = ../wallpapers;
@@ -235,8 +247,8 @@
 
       home.pointerCursor = lib.mkDefault {
         enable = true;
-        name = "Quintom_Ink";
-        package = pkgs.quintom-cursor-theme;
+        name = "Moga-Cursor";
+        package = moga-cursor;
         size = 20;
         hyprcursor = {
           enable = true;
