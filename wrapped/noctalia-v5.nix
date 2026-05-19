@@ -91,7 +91,7 @@
           bar = {
             default = {
               attach_panels = true;
-              background_opacity = 0.8;
+              background_opacity = 0.6;
               capsule = true;
               capsule_fill = "on_secondary";
               capsule_opacity = 0.4;
@@ -100,7 +100,6 @@
               ];
               end = [
                 "tray"
-                "power_profiles"
                 "notifications"
                 "clipboard"
                 "volume"
@@ -123,6 +122,14 @@
           # brightness = {
           #   enable_ddcutil = true;
           # };
+          control_centre.shortcuts = [
+            "wifi"
+            "bluetooth"
+            "caffeine"
+            "nightlight"
+            "power_profile"
+            "dark_mode"
+          ];
           desktop_widgets = {
             enabled = false;
           };
@@ -159,8 +166,10 @@
           };
           shell = {
             avatar_path = self.avatar;
+            time_format = "{:%I:%M %P}";
             corner_radius_scale = 1.45;
             font_family = "Inter";
+            # niri_overview_type_to_launch_enabled = true;
             password_style = "random";
             polkit_agent = true;
             settings_show_advanced = true;
@@ -169,7 +178,8 @@
               speed = 4.0;
             };
             panel = {
-              attach_clipboard = false;
+              attach_clipboard = true;
+              clipboard_placement = "attached";
               attach_launcher = false;
               open_near_click_clipboard = true;
               open_near_click_control_center = true;
@@ -196,10 +206,10 @@
             last = {
               path = self.wallpaper;
             };
-            "DP-1" = {
+            monitors."DP-1" = {
               path = self.wallpaper;
             };
-            "eDP-1" = {
+            monitors."eDP-1" = {
               path = self.wallpaper;
             };
           };
