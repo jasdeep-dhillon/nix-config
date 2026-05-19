@@ -91,7 +91,7 @@
           bar = {
             default = {
               attach_panels = true;
-              background_opacity = 0.6;
+              background_opacity = 0.8;
               capsule = true;
               capsule_fill = "on_secondary";
               capsule_opacity = 0.4;
