@@ -292,11 +292,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1778816010,
-        "narHash": "sha256-qB9ZwVMIx/ugH5WrgWQ1d52PyZiwSgPGVag0XMvtJjc=",
+        "lastModified": 1779270632,
+        "narHash": "sha256-TRjC3TbcoFZniXXMSe0LH+gW3yXgMnBy+BETcl/Jn1Y=",
         "owner": "Jasdeep-Dhillon",
         "repo": "helium-nix-flake",
-        "rev": "7d6b20aa07f03bdaa142f0a2598c3f9e154e60c9",
+        "rev": "5efd3745873ab32bde22c65ba78b7ba1d1d8beeb",
         "type": "github"
       },
       "original": {
