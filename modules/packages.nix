@@ -44,7 +44,7 @@
         telegram-desktop
         (discord.override {
           withVencord = true;
-          # withOpenASAR = true;
+          withOpenASAR = true;
         })
         loupe
         unrar
