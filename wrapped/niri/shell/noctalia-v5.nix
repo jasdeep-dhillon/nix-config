@@ -8,7 +8,7 @@
       monitor = "eDP-1";
     in
     {
-      extraPackages = [
+      runtimePkgs = [
         self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-v5
         self.packages.${pkgs.stdenv.hostPlatform.system}.fuzzel
         pkgs.ddcutil

@@ -3,7 +3,7 @@
   flake.nixosModules.ignore =
     { pkgs, lib, ... }:
     {
-      extraPackages = [
+      runtimePkgs = [
         self.packages.${pkgs.stdenv.hostPlatform.system}.vibepanel
         self.packages.${pkgs.stdenv.hostPlatform.system}.fuzzel
         pkgs.swaybg

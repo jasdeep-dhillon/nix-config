@@ -6,7 +6,7 @@
       noctalia = lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell;
     in
     {
-      extraPackages = [ self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell ];
+      runtimePkgs = [ self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-shell ];
       settings = {
         spawn-at-startup = [
           [

@@ -3,7 +3,7 @@
   flake.nixosModules.ignore =
     { pkgs, lib, ... }:
     {
-      extraPackages = [ inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default ];
+      runtimePkgs = [ inputs.dms.packages.${pkgs.stdenv.hostPlatform.system}.default ];
       settings.environment = {
         DMS_DISABLE_MATUGEN = "1";
         DMS_DISABLE_CAVA = "1";
