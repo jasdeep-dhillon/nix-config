@@ -116,6 +116,7 @@
           hwdec = "auto";
           slang = "en";
           border = "no";
+          ao = "pulse";
           save-position-on-quit = true;
           keep-open = true;
           keepaspect-window = "no";
