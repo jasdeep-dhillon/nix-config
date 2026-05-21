@@ -184,12 +184,14 @@
               open_near_click_clipboard = true;
               open_near_click_control_center = true;
               open_near_click_launcher = true;
-              transparency_mode = "glass";
+              transparency_mode = "soft";
+              session_placement = "centered";
             };
             screen_corners = {
               enabled = true;
               size = 8;
             };
+            screen_time_enabled = true;
           };
           theme = {
             mode = "auto";
@@ -216,6 +218,7 @@
           };
           weather = {
             auto_locate = true;
+            refresh_minutes = 60;
           };
           widget = {
             clock = {
