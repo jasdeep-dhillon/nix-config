@@ -48,7 +48,6 @@
         })
         loupe
         unrar
-        prismlauncher
         onlyoffice-desktopeditors
         pear-desktop
         easyeffects
