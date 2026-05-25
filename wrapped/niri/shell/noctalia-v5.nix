@@ -99,17 +99,17 @@
             "/emo"
           ];
         };
-        # "Mod+F3" = _: {
-        #   props.repeat = false;
-        #   props.hotkey-overlay-title = "Audio Picker";
-        #   content.spawn = [
-        #     noctalia
-        #     "ipc"
-        #     "call"
-        #     "volume"
-        #     "togglePanel"
-        #   ];
-        # };
+        "Mod+F2" = _: {
+          props.repeat = false;
+          props.hotkey-overlay-title = "Audio Picker";
+          content.spawn = [
+            noctalia
+            "msg"
+            "panel-toggle"
+            "control-center"
+            "audio"
+          ];
+        };
         "Mod+I" = _: {
           props.repeat = false;
           props.hotkey-overlay-title = "Settings";
@@ -148,17 +148,17 @@
             "control-center"
           ];
         };
-        # "Mod+N" = _: {
-        #   props.repeat = false;
-        #   props.hotkey-overlay-title = "Notifications";
-        #   content.spawn = [
-        #     noctalia
-        #     "msg"
-        #     "call"
-        #     "notifications"
-        #     "toggleHistory"
-        #   ];
-        # };
+        "Mod+F3" = _: {
+          props.repeat = false;
+          props.hotkey-overlay-title = "Notifications";
+          content.spawn = [
+            noctalia
+            "msg"
+            "panel-toggle"
+            "control-center"
+            "notifications"
+          ];
+        };
 
         XF86MonBrightnessUp = _: {
           props.allow-when-locked = true;
@@ -209,16 +209,15 @@
             "toggle"
           ];
         };
-        # XF86AudioStop = _: {
-        #   props.allow-when-locked = true;
-        #   content.spawn = [
-        #     noctalia
-        #     "ipc"
-        #     "call"
-        #     "media"
-        #     "stop"
-        #   ];
-        # };
+        XF86AudioStop = _: {
+          props.allow-when-locked = true;
+          content.spawn = [
+            noctalia
+            "msg"
+            "media"
+            "stop"
+          ];
+        };
         XF86AudioPrev = _: {
           props.allow-when-locked = true;
           content.spawn = [
