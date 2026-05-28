@@ -167,6 +167,7 @@
           shell = {
             avatar_path = self.avatar;
             time_format = "{:%I:%M %P}";
+            launch_apps_as_systemd_services = true;
             corner_radius_scale = 1.45;
             font_family = "Inter";
             # niri_overview_type_to_launch_enabled = true;
@@ -235,6 +236,7 @@
             };
             taskbar = {
               anchor = true;
+              capsule = false;
               capsule_fill = "on_primary";
               capsule_foreground = "primary";
               capsule_padding = 4.0;
@@ -242,7 +244,10 @@
               hide_empty_workspaces = false;
               only_active_workspace = false;
               show_all_outputs = false;
+              occupied_color = "tertiary";
               show_workspace_label = false;
+              workspace_label_placement = "inside";
+              scale = 1.25;
             };
             tray = {
               drawer = false;
@@ -265,7 +270,7 @@
             mOnTertiary = "#11111b";
             mError = "#f38ba8";
             mOnError = "#11111b";
-            mSurface = "#070722";
+            mSurface = "#181825";
             mOnSurface = "#cdd6f4";
             mSurfaceVariant = "#1e1e2e";
             mOnSurfaceVariant = "#a3b4eb";
