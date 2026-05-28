@@ -12,7 +12,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     helium = {
-      url = "github:Jasdeep-Dhillon/helium-nix-flake";
+      url = "github:Jasdeep-Dhillon/helium-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     run0-sudo-shim = {
