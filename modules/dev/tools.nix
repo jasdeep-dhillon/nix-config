@@ -36,6 +36,7 @@
         fx
         just
         devenv
+        act
       ];
       programs.direnv = {
         enable = true;
