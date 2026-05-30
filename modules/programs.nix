@@ -69,6 +69,9 @@
           window_margin_width = 4;
           mouse_map = "middle release ungrabbed paste_from_selection";
         };
+        extraConfig = ''
+          background_opacity 0.8
+        '';
       };
       programs.mangohud = {
         enable = true;
