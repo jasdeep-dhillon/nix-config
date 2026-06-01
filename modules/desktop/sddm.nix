@@ -1,11 +1,11 @@
-{ ... }:
+{ self, ... }:
 {
   flake.nixosModules.sddm =
     { pkgs, lib, ... }:
     let
       background-package = pkgs.stdenvNoCC.mkDerivation {
         name = "background-image";
-        src = ../../wallpapers/96740776_p5.jpg;
+        src = self.wallpaper;
         dontUnpack = true;
         installPhase = ''
           cp $src $out
@@ -13,7 +13,7 @@
       };
       avatar-package = pkgs.stdenvNoCC.mkDerivation {
         name = "avatar-package";
-        src = ../../avatar.jpg;
+        src = self.avatar;
         dontUnpack = true;
         installPhase = ''
           mkdir -p $out/share/sddm/faces

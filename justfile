@@ -67,3 +67,7 @@ test-lain:
 # Clear unused packages from nix store
 clean:
     nh clean all
+
+# Run SDDM in test mode
+sddm:
+    sddm-greeter-qt6 --test-mode --theme /run/current-system/sw/share/sddm/themes/breeze/
