@@ -126,47 +126,48 @@
           screenshot-directory = "~/Pictures/MPV-Screenshots";
           screenshot-template = "%F %p";
         };
-        extraInput = ''
-          [ add speed -0.25
-          ] add speed 0.25
-          4 ignore
-          5 ignore
-          6 ignore
-          7 ignore
-          8 ignore
-          9 ignore
-          0 ignore
-          1 cycle sub down                            # switch subtitle track
-          2 cycle sub                                 # switch subtitle track backwards
-          3 cycle audio
-          ESC set fullscreen no
-          v ignore
-          / ignore
-          w ignore
-          e ignore
-          p ignore
-          j ignore
-          J ignore
-          WHEEL_UP      add volume 5
-          WHEEL_DOWN    add volume -5
-          =      add volume 5
-          -   add volume -5
-          i script-binding stats/display-stats-toggle
-          RIGHT seek  10                           # seek 5 seconds forward
-          LEFT  seek -10
-          v   playlist-prev                        # skip to the previous file
-          b playlist-next                          # skip to the next file
-        '';
+        bindings = {
+          "[" = "add speed -0.25";
+          "]" = "add speed 0.25";
+          "4" = " ignore";
+          "5" = " ignore";
+          "6" = " ignore";
+          "7" = " ignore";
+          "8" = " ignore";
+          "9" = " ignore";
+          "0" = " ignore";
+          "1" = " cycle sub down"; # switch subtitle track
+          "2" = " cycle sub"; # switch subtitle track backwards
+          "3" = " cycle audio";
+          "ESC" = " set fullscreen no";
+          "w" = " ignore";
+          "e" = " ignore";
+          "p" = " ignore";
+          "j" = " ignore";
+          "J" = " ignore";
+          "WHEEL_UP" = "      add volume 5";
+          "WHEEL_DOWN" = "    add volume -5";
+          "=      add" = " volume 5";
+          "-   add" = " volume -5";
+          "i" = " script-binding stats/display-stats-toggle";
+          "RIGHT" = " seek  10"; # seek 5 seconds forward
+          "LEFT" = "  seek -10";
+          "v" = "   playlist-prev"; # skip to the previous file
+          "b" = " playlist-next"; # skip to the next file
+          "alt+c" = " script-message-to crop toggle-crop hard";
+          "alt+e" = "script-message-to encode set-timestamp";
+        };
+        extraInput = "";
         scripts = with pkgs.mpvScripts; [
           pkgs.mpvScripts.builtins.autoload
           sponsorblock-minimal
-          modernz
           youtube-chat
           twitch-chat
           mpris
-          eisa01.smart-copy-paste-2
           eisa01.smartskip
           webtorrent-mpv-hook
+          occivink.crop
+          occivink.encode
         ];
       };
     };
