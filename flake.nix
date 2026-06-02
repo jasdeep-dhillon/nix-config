@@ -1,4 +1,32 @@
 {
+  nixConfig = {
+    extra-substituters = [
+      "https://cache.garnix.io/"
+      "https://nix-community.cachix.org/"
+      "https://noctalia.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+    ];
+    experimental-features = [
+      "cgroups"
+      "flakes"
+      "nix-command"
+      "pipe-operators"
+    ];
+    trusted-users = [
+      "root"
+      "@wheel"
+    ];
+    http-connections = 50;
+    show-trace = true;
+    use-cgroups = true;
+    use-xdg-base-directories = true;
+    warn-dirty = false;
+    allowUnfree = true;
+  };
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
