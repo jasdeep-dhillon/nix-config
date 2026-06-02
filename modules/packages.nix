@@ -37,7 +37,7 @@
         kdePackages.okular
         mission-center
         video-trimmer
-        bitwarden-desktop
+        # bitwarden-desktop
         vesktop
         scrcpy
         qbittorrent

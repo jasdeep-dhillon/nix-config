@@ -63,13 +63,13 @@
             (lib.getExe pkgs.bottom)
           ];
         };
-        "Mod+Slash" = _: {
-          props.repeat = false;
-          props.hotkey-overlay-title = "Bitwarden";
-          content.spawn = [
-            (lib.getExe pkgs.bitwarden-desktop)
-          ];
-        };
+        # "Mod+Slash" = _: {
+        #   props.repeat = false;
+        #   props.hotkey-overlay-title = "Bitwarden";
+        #   content.spawn = [
+        #     (lib.getExe pkgs.bitwarden-desktop)
+        #   ];
+        # };
         "Mod+Shift+Escape" = _: {
           props.repeat = false;
           props.hotkey-overlay-title = "Quit Niri";
