@@ -94,6 +94,19 @@
               background_opacity = 0.8;
               capsule = true;
               capsule_fill = "on_secondary";
+              capsule_group = [
+                {
+                  fill = "on_secondary";
+                  id = "control";
+                  members = [
+                    "volume"
+                    "brightness"
+                    "battery"
+                  ];
+                  opacity = 0.4;
+                  padding = 6.0;
+                }
+              ];
               capsule_opacity = 0.4;
               center = [
                 "taskbar"
@@ -102,9 +115,7 @@
                 "tray"
                 "notifications"
                 "clipboard"
-                "volume"
-                "brightness"
-                "battery"
+                "group:control"
                 "control-center"
               ];
               margin_edge = 4;
@@ -122,13 +133,15 @@
           # brightness = {
           #   enable_ddcutil = true;
           # };
-          control_centre.shortcuts = [
-            "wifi"
-            "bluetooth"
-            "caffeine"
-            "nightlight"
-            "power_profile"
-            "dark_mode"
+          control_center.sidebar_section = "none";
+
+          control_center.shortcuts = [
+            { type = "wifi"; }
+            { type = "bluetooth"; }
+            { type = "caffeine"; }
+            { type = "power_profile"; }
+            { type = "dark_mode"; }
+            { type = "notification"; }
           ];
           desktop_widgets = {
             enabled = false;
@@ -187,6 +200,7 @@
               open_near_click_launcher = true;
               transparency_mode = "soft";
               session_placement = "centered";
+              shadow = false;
             };
             screen_corners = {
               enabled = true;
@@ -224,6 +238,14 @@
           widget = {
             clock = {
               format = " {:%A, %B %e } • {:%I:%M %P} ";
+            };
+            volume.scroll_step = 2;
+            volume.show_label = false;
+            brightness.show_label = false;
+            battery = {
+              show_label = false;
+              display_mode = "graphic";
+              scale = 0.6;
             };
             control-center = {
               glyph = "layout-board-filled";

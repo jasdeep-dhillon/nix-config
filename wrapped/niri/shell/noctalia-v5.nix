@@ -125,7 +125,8 @@
           content.spawn = [
             noctalia
             "msg"
-            "screen-lock"
+            "session"
+            "lock"
           ];
         };
         "Mod+Escape" = _: {
