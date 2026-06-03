@@ -12,6 +12,7 @@
       scheduler
       services
       settings
+      tailscale
       user
       inputs.home-manager.nixosModules.default
     ];
