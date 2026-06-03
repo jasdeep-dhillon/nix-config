@@ -17,6 +17,10 @@
             # (lib.getExe pkgs.runapp)
             (lib.getExe pkgs.pear-desktop)
           ]
+          [
+            (lib.getExe pkgs.tailscale)
+            "systray"
+          ]
         ];
         # spawn-sh-at-startup = [
         #   ''
