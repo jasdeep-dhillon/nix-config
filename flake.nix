@@ -33,18 +33,22 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:vic/import-tree";
     wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
-
     home-manager.url = "github:nix-community/home-manager";
     lanzaboote = {
       url = "github:nix-community/lanzaboote/v1.0.0";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    helium = {
-      url = "github:Jasdeep-Dhillon/helium-flake";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     run0-sudo-shim = {
       url = "github:lordgrimmauld/run0-sudo-shim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    helium = {
+      url = "github:Jasdeep-Dhillon/helium-flake";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     stylix = {

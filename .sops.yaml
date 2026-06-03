@@ -1,0 +1,11 @@
+keys:
+  - users:
+      - &arc age10aww7xtz7rg23cqzl8ylt2n02dk9x83v798zhpp7m49qxju0p4fqty33tp
+  - hosts:
+      - &legion age1helewxhr4wjl4gmt0upjt3ly8x49n7vevdnl5erkf3g3nsd5fgjs787260
+creation_rules:
+  - path_regex: secrets.yaml$
+    key_groups:
+      - age:
+          - *arc
+          - *legion
