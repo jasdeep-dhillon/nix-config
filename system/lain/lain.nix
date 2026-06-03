@@ -4,13 +4,7 @@
     modules = with self.nixosModules; [
       lain
       
-      boot
-      lanzaboote
-      locale
-      run0
-      services
-      settings
-      user
+      base
       ssh-server
       jellyfin-server
       nvidia

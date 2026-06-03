@@ -3,6 +3,9 @@
   flake.nixosModules.desktop = {
     imports = with self.nixosModules; [
       niri
+      flatpak
+      fonts
+      scheduler
       inputs.home-manager.nixosModules.default
       self.nixosModules.guiPrograms
     ];

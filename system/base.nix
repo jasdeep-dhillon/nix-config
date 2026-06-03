@@ -3,13 +3,10 @@
   flake.nixosModules.base = {
     imports = with self.nixosModules; [
       boot
-      flatpak
-      fonts
       lanzaboote
       locale
       networking
       run0
-      scheduler
       services
       settings
       tailscale
