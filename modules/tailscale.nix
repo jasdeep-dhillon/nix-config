@@ -4,7 +4,10 @@
     { config, ... }:
     {
 
-      services.tailscale.enable = true;
+      services.tailscale = {
+        enable = true;
+        authKeyFile = "/run/secrets/private_keys/tailscale";
+      };
       networking.nftables.enable = true;
 
       networking.firewall = {
