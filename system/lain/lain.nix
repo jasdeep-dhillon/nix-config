@@ -10,6 +10,7 @@
       nvidia
       vcs
       programs
+      qbit
     ];
   };
 }
