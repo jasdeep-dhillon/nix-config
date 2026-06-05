@@ -6,7 +6,7 @@
 
       services.tailscale = {
         enable = true;
-        authKeyFile = "/run/secrets/private_keys/tailscale";
+        authKeyFile = config.sops.secrets."private_keys/tailscale".path;
       };
       networking.nftables.enable = true;
 
