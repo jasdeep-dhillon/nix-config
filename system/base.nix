@@ -9,6 +9,7 @@
       run0
       services
       settings
+      sops
       tailscale
       user
       inputs.home-manager.nixosModules.default
