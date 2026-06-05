@@ -70,7 +70,7 @@
           mouse_map = "middle release ungrabbed paste_from_selection";
         };
         extraConfig = ''
-          background_opacity 0.8
+          background_opacity 0.9
         '';
       };
       programs.mangohud = {
