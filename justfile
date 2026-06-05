@@ -71,3 +71,8 @@ clean:
 # Run SDDM in test mode
 sddm:
     sddm-greeter-qt6 --test-mode --theme /run/current-system/sw/share/sddm/themes/breeze/
+
+# Copy keys to sops config directory
+keys:
+    mkdir ~/.config/sops/age
+    cp keys.txt ~/.config/sops/age
