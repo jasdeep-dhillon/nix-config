@@ -76,3 +76,7 @@ sddm:
 keys:
     mkdir ~/.config/sops/age
     cp keys.txt ~/.config/sops/age
+
+# Optimise nix store
+optimise:
+    nix store optimise

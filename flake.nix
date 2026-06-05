@@ -26,6 +26,7 @@
     use-xdg-base-directories = true;
     warn-dirty = false;
     allowUnfree = true;
+    accept-flake-config = true;
   };
 
   inputs = {
