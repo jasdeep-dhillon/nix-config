@@ -28,32 +28,40 @@
   flake.homeModules.packages =
     { pkgs, ... }:
     {
-      home.packages = with pkgs; [
-        qview
-        starship-jj
-        gnome-calculator
-        snapshot
-        zathura
-        kdePackages.okular
-        mission-center
-        video-trimmer
-        # bitwarden-desktop
-        vesktop
-        scrcpy
-        qbittorrent
-        telegram-desktop
-        (discord.override {
-          withVencord = true;
-          withOpenASAR = true;
-        })
-        loupe
-        unrar
-        onlyoffice-desktopeditors
-        pear-desktop
-        easyeffects
-        jellyfin-desktop
-        pinta
-        inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
-      ];
+      home.packages =
+        with pkgs;
+        [
+          qview
+          starship-jj
+          gnome-calculator
+          snapshot
+          zathura
+          mission-center
+          video-trimmer
+          # bitwarden-desktop
+          vesktop
+          scrcpy
+          qbittorrent
+          telegram-desktop
+          (discord.override {
+            withVencord = true;
+            withOpenASAR = true;
+          })
+          loupe
+          unrar
+          onlyoffice-desktopeditors
+          pear-desktop
+          easyeffects
+          jellyfin-desktop
+          pinta
+          gnome-disk-utility
+          drawy
+          inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
+        ]
+        ++ (with pkgs.kdePackages; [
+          okular
+          filelight
+          kdenlive
+        ]);
     };
 }
