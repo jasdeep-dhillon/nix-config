@@ -5,14 +5,13 @@
       inputs.home-manager.nixosModules.default
       self.nixosModules.vcs
     ];
-    home-manager.users.arc = {
-      imports = [ self.homeModules.vcs ];
-    };
   };
   flake.nixosModules.vcs =
     { pkgs, ... }:
     {
-
+      home-manager.users.arc = {
+        imports = [ self.homeModules.vcs ];
+      };
       environment.systemPackages = with pkgs; [
         jj
       ];
