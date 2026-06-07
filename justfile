@@ -6,15 +6,15 @@ alias u := update-all
 
 # Update all flake inputs
 update-all:
-    nix flake update --commit-lock-file
+    nix flake update --commit-lock-file --accept-flake-config
 
 # Update specificied input
 update INPUT:
-    nix flake update {{ INPUT }} --commit-lock-file
+    nix flake update {{ INPUT }} --commit-lock-file --accept-flake-config
 
 # Check flake configuration
 check:
-    nix flake check
+    nix flake check --accept-flake-config
 
 # Check Home manager configuration
 # check-home:
@@ -26,27 +26,27 @@ trace-check:
 
 # Switch legion generation
 switch-legion:
-    nh os switch . -H legion
+    nh os switch . -H legion --accept-flake-config
 
 # Switch legion generation
 switch-lain:
-    nh os switch . -H lain
+    nh os switch . -H lain --accept-flake-config
 
 # Boot to configuration
 boot-legion:
-    nh os boot . -H legion
+    nh os boot . -H legion --accept-flake-config
 
 # Boot to configuration
 boot-lain:
-    nh os boot . -H lain
+    nh os boot . -H lain --accept-flake-config
 
 # Switch legion generation with show-trace
 trace-switch-legion:
-    nh os switch . -H legion --show-trace
+    nh os switch . -H legion --accept-flake-config --show-trace
 
 # Switch lain generation with show-trace
 trace-switch-lain:
-    nh os switch . -H lain --show-trace
+    nh os switch . -H lain --accept-flake-config --show-trace
 
 # Switch home manager generation
 # switch-home:
@@ -58,11 +58,11 @@ trace-switch-lain:
 
 # Test legion configuration
 test-legion:
-    nh os test . -H legion
+    nh os test . -H legion --accept-flake-config
 
 # Test legion configuration
 test-lain:
-    nh os test . -H lain
+    nh os test . -H lain --accept-flake-config
 
 # Clear unused packages from nix store
 clean:
