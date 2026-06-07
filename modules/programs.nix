@@ -440,7 +440,7 @@
         shellAliases = {
           cls = "clear";
           zed = "zeditor";
-          nixos = "cd /media/Storage/Projects/nix-config";
+          nixos = "cd ${builtins.getEnv "PWD"}";
           projects = "cd /media/Storage/Projects";
         };
 
