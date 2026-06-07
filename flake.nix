@@ -25,8 +25,7 @@
     use-cgroups = true;
     use-xdg-base-directories = true;
     warn-dirty = false;
-    allowUnfree = true;
-    accept-flake-config = true;
+    allow-unfree = true;
   };
 
   inputs = {
