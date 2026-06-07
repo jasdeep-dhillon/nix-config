@@ -59,18 +59,10 @@
     vibepanel = {
       url = "github:prankstr/vibepanel";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    noctalia = {
-      url = "github:noctalia-dev/noctalia-shell";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    };  
     noctalia-v5 = {
       url = "github:noctalia-dev/noctalia-shell/v5";
       inputs.nixpkgs.follows = "nixpkgs";
-    };
-    noctalia-plugins = {
-      url = "github:noctalia-dev/noctalia-plugins";
-      flake = false;
     };
     dms = {
       url = "github:AvengeMedia/DankMaterialShell/stable";
