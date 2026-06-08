@@ -160,7 +160,17 @@
             "notifications"
           ];
         };
-
+        "Mod+F4" = _: {
+          props.repeat = false;
+          props.hotkey-overlay-title = "Brightness";
+          content.spawn-sh = ''
+            pkill -x fuzzel ||
+            ${lib.getExe pkgs.ddcutil} setvcp 10 "$(${
+              lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.fuzzel
+            } --lines 0 -d -p 'Brightness: ' --placeholder='40-450')"
+          '';
+        };
+        
         XF86MonBrightnessUp = _: {
           props.allow-when-locked = true;
           content.spawn = [
