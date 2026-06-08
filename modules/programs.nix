@@ -1,9 +1,8 @@
-{ self, inputs, ... }:
+{ self, ... }:
 {
   flake.nixosModules.programs =
     { pkgs, ... }:
     {
-      imports = [ inputs.home-manager.nixosModules.default ];
       home-manager.users.arc = {
         imports = [ self.homeModules.programs ];
       };
@@ -29,7 +28,6 @@
   flake.nixosModules.guiPrograms =
     { pkgs, config, ... }:
     {
-      imports = [ inputs.home-manager.nixosModules.default ];
       home-manager.users.arc = {
         imports = [ self.homeModules.guiPrograms ];
       };

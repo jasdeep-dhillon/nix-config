@@ -3,7 +3,6 @@
   flake.nixosModules.packages =
     { pkgs, ... }:
     {
-      imports = [ inputs.home-manager.nixosModules.default ];
       environment.systemPackages = with pkgs; [
         ffmpeg
         yt-dlp

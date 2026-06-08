@@ -14,8 +14,13 @@
       user
       inputs.home-manager.nixosModules.default
     ];
-    home-manager.users.arc = {
-      imports = [ self.homeModules.base ];
+    home-manager = {
+      useUserPackages = true;
+      backupFileExtension = "bak";
+      overwriteBackup = true;
+      users.arc = {
+        imports = [ self.homeModules.base ];
+      };
     };
   };
 

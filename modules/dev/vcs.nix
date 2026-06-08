@@ -1,10 +1,7 @@
-{ self, inputs, ... }:
+{ self, ... }:
 {
   flake.nixosModules.dev = {
-    imports = [
-      inputs.home-manager.nixosModules.default
-      self.nixosModules.vcs
-    ];
+    imports = [ self.nixosModules.vcs ];
   };
   flake.nixosModules.vcs =
     { pkgs, ... }:
@@ -28,7 +25,12 @@
     };
 
   flake.homeModules.vcs =
-    { pkgs, ... }:
+    {
+      pkgs,
+      lib,
+      config,
+      ...
+    }:
     let
       name = "Jasdeep-Dhillon";
       email = "jasdeepsdhillon@proton.me";
@@ -101,6 +103,7 @@
           };
           ui = {
             default-command = "log";
+            diff-editor = lib.mkIf config.programs.helix.enable "hx";
           };
           signing = {
             behavior = "own";

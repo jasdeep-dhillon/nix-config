@@ -1,4 +1,4 @@
-{ self, inputs, ... }:
+{ self, ... }:
 {
   flake.nixosModules.desktop =
     { config, lib, ... }:
@@ -8,7 +8,6 @@
         flatpak
         fonts
         scheduler
-        inputs.home-manager.nixosModules.default
         self.nixosModules.guiPrograms
       ];
       systemd.user.services.tailscale-systray = {

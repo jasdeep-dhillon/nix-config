@@ -1,7 +1,6 @@
-{ self, inputs, ... }:
+{ ... }:
 {
   flake.nixosModules.dev = {
-    imports = [ inputs.home-manager.nixosModules.default ];
     # home-manager.users.arc = {
     #   imports = [ self.homeModules.android ];
     # };

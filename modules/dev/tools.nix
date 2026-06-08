@@ -1,9 +1,8 @@
-{ self, inputs, ... }:
+{ self, ... }:
 {
   flake.nixosModules.dev =
     { pkgs, ... }:
     {
-      imports = [ inputs.home-manager.nixosModules.default ];
       home-manager.users.arc = {
         imports = [ self.homeModules.tools ];
       };
