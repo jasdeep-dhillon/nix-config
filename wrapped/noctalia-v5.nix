@@ -86,6 +86,7 @@
             enable_overdrive = true;
           };
           backdrop = {
+            enabled = true;
             tint_intensity = 0.6;
           };
           bar = {
@@ -171,6 +172,10 @@
               };
             };
           };
+          location = {
+            auto_locate = true;
+            refresh_minutes = 60;
+          };
           notification = {
             layer = "overlay";
           };
@@ -209,7 +214,7 @@
             screen_time_enabled = true;
           };
           theme = {
-            mode = "auto";
+            mode = "dark";
             # builtin = "Catppuccin";
             # community_palette = "Catppuccin Lavender";
             # source = "community";
@@ -230,10 +235,6 @@
             monitors."eDP-1" = {
               path = self.wallpaper;
             };
-          };
-          weather = {
-            auto_locate = true;
-            refresh_minutes = 60;
           };
           widget = {
             clock = {
