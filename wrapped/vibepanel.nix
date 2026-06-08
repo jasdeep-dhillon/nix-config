@@ -120,7 +120,6 @@
               weight = 400;
             };
             states = {
-              success = "#a6e3a1";
               warning = "#f9e2af";
               urgent = "#f38ba8";
             };
