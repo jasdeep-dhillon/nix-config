@@ -22,7 +22,7 @@
         };
 
         nvidia = {
-          package = config.boot.kernelPackages.nvidiaPackages.stable;
+          package = config.boot.kernelPackages.nvidiaPackages.bleeding_edge;
           # package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
           #   version = "595.45.04";
           #   sha256_64bit = "sha256-zUllSSRsuio7dSkcbBTuxF+dN12d6jEPE0WgGvVOj14=";
