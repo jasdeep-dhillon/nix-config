@@ -4,12 +4,12 @@
   flake.nixosModules.niriShell =
     { pkgs, lib, ... }:
     let
-      noctalia = lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-v5;
+      noctalia = lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia;
       monitor = "eDP-1";
     in
     {
       runtimePkgs = [
-        self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia-v5
+        self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia
         self.packages.${pkgs.stdenv.hostPlatform.system}.fuzzel
         pkgs.ddcutil
       ];

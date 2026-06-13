@@ -606,23 +606,22 @@
         "type": "github"
       }
     },
-    "noctalia-v5": {
+    "noctalia": {
       "inputs": {
         "nixpkgs": [
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1781018771,
-        "narHash": "sha256-/wIMOo9hJnW9SN0uAsmBWC5f7urFKJLWjNJHCcXgTLM=",
+        "lastModified": 1781207127,
+        "narHash": "sha256-TVx835zvdlEjUgm16z15uIwE7wGf2X38ytDuZlodMd0=",
         "owner": "noctalia-dev",
         "repo": "noctalia-shell",
-        "rev": "d0b1899953e9596f3a921b7cde970dcca4487b5b",
+        "rev": "94030060c7586b74568bff4f77a10696800a843c",
         "type": "github"
       },
       "original": {
         "owner": "noctalia-dev",
-        "ref": "v5",
         "repo": "noctalia-shell",
         "type": "github"
       }
@@ -730,7 +729,7 @@
         "import-tree": "import-tree",
         "lanzaboote": "lanzaboote",
         "nixpkgs": "nixpkgs_3",
-        "noctalia-v5": "noctalia-v5",
+        "noctalia": "noctalia",
         "run0-sudo-shim": "run0-sudo-shim",
         "sops-nix": "sops-nix",
         "stylix": "stylix",

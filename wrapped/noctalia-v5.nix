@@ -1,6 +1,6 @@
 { self, inputs, ... }:
 {
-  flake.wrappersModules.noctalia-v5 = inputs.wrapper-modules.lib.wrapModule (
+  flake.wrappersModules.noctalia = inputs.wrapper-modules.lib.wrapModule (
     {
       config,
       wlib,
@@ -70,7 +70,7 @@
           output = lib.mkOverride 0 config.configDrvOutput;
           relPath = lib.mkOverride 0 "noctalia/palettes/custom.json";
         };
-        package = lib.mkDefault inputs.noctalia-v5.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        package = lib.mkDefault inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
         meta.maintainers = [ "Arc" ];
       };
     }
@@ -78,9 +78,9 @@
   perSystem =
     { pkgs, ... }:
     {
-      packages.noctalia-v5 = self.wrappersModules.noctalia-v5.wrap {
+      packages.noctalia = self.wrappersModules.noctalia.wrap {
         inherit pkgs;
-        package = inputs.noctalia-v5.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
         settings = {
           audio = {
             enable_overdrive = true;
