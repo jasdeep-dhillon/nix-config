@@ -4,6 +4,16 @@
     home-manager.users.arc = {
       imports = [ self.homeModules.toolchain ];
     };
+    networking.firewall = {
+      allowedTCPPorts = [
+        3000
+        4000
+      ];
+      allowedUDPPorts = [
+        3000
+        4000
+      ];
+    };
   };
   flake.homeModules.toolchain =
     { pkgs, ... }:

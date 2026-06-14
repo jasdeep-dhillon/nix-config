@@ -32,6 +32,13 @@
           ExecStart = "${lib.getExe config.services.tailscale.package} systray";
         };
       };
+
+      # Ports for KDE Connect
+      networking.firewall = {
+        allowedTCPPorts = (lib.lists.range 1714 1764);
+        allowedUDPPorts = (lib.lists.range 1714 1764);
+      };
+
       home-manager.users.arc = {
         imports = [ self.homeModules.desktop ];
       };
