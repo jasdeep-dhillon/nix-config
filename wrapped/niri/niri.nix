@@ -47,9 +47,7 @@
           hotkey-overlay = {
             skip-at-startup = { };
           };
-          screenshot-path = ''
-            ~/Pictures/Screenshots/Screenshot_%Y-%m-%d_%H-%M-%S.png
-          '';
+          screenshot-path = "~/Pictures/Screenshots/Screenshot_%Y-%m-%d_%H-%M-%S.png";
           animations = {
             slowdown = 0.5;
           };
