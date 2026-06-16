@@ -176,11 +176,17 @@
             auto_locate = true;
             refresh_minutes = 60;
           };
+          lockscreen = {
+            blur_intensity = 0.0;
+          };
           notification = {
             layer = "overlay";
           };
           osd = {
             position = "bottom_center";
+            kinds = {
+              media = false;
+            };
           };
           shell = {
             avatar_path = self.avatar;
@@ -205,6 +211,7 @@
               open_near_click_launcher = true;
               transparency_mode = "soft";
               session_placement = "centered";
+              launcher_session_search = true;
               shadow = false;
             };
             screen_corners = {
