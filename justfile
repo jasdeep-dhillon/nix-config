@@ -74,8 +74,8 @@ sddm:
 
 # Copy keys to sops config directory
 keys:
-    mkdir ~/.config/sops/age
-    cp keys.txt ~/.config/sops/age
+    sudo mkdir -p /persist/sops
+    sudo cp keys.txt /persist/sops
 
 # Optimise nix store
 optimise:

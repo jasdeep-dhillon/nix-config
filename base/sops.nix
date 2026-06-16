@@ -3,7 +3,7 @@
   flake.nixosModules.sops =
     { pkgs, config, ... }:
     let
-      keyFile = "/home/arc/.config/sops/age/keys.txt";
+      keyFile = "/persist/sops/keys.txt";
     in
     {
       imports = [ inputs.sops-nix.nixosModules.sops ];
