@@ -1,7 +1,12 @@
 { ... }:
 {
   flake.nixosModules.gaming =
-    { pkgs, ... }:
+    {
+      pkgs,
+      config,
+      lib,
+      ...
+    }:
     {
       hardware.graphics.enable32Bit = true;
       programs.steam = {
@@ -53,14 +58,22 @@
         (pkgs.prismlauncher.override {
           additionalPrograms = with pkgs; [ libxkbcommon ];
           additionalLibs = with pkgs; [ libxkbcommon ];
-          
+
         })
         # umu-launcher
         # wineWowPackages.staging
         ryubing
       ];
-      environment.sessionVariables = {
-        STEAM_EXTRA_COMPAT_TOOLS_PATH = "\${HOME}/.steam/root/compatibilitytools.d";
-      };
+      environment.sessionVariables = lib.mergeAttrsList [
+        {
+          STEAM_EXTRA_COMPAT_TOOLS_PATH = "\${HOME}/.steam/root/compatibilitytools.d";
+        }
+
+        (lib.optionalAttrs config.hardware.nvidia.enabled {
+          __GL_SHADER_DISK_CACHE_SIZE = "12000000000";
+          __GL_SHADER_DISK_CACHE_SKIP_CLEANUP = "1";
+        })
+      ];
+
     };
 }
