@@ -15,14 +15,14 @@
     };
   flake.homeModules.theme =
     { pkgs, lib, ... }:
-    let 
-      moga-cursor = pkgs.stdenvNoCC.mkDerivation {
-        name = "Moga-Cursor";
+    let
+      aosp-cursor = pkgs.stdenvNoCC.mkDerivation {
+        name = "AOSP-Cursors";
         src = ../cursor-theme;
         installPhase = ''
           runHook preInstall
-          mkdir -p $out/share/icons/Moga-Cursor
-          cp -r * $out/share/icons/Moga-Cursor
+          mkdir -p $out/share/icons/AOSP-Cursors
+          cp -r * $out/share/icons/AOSP-Cursors
           runHook postInstall
         '';
       };
@@ -248,12 +248,12 @@
 
       home.pointerCursor = lib.mkDefault {
         enable = true;
-        name = "Moga-Cursor";
-        package = moga-cursor;
-        size = 20;
+        name = "AOSP-Cursors";
+        package = aosp-cursor;
+        size = 18;
         hyprcursor = {
           enable = true;
-          size = 20;
+          size = 18;
         };
         gtk.enable = true;
       };
