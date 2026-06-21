@@ -103,7 +103,6 @@
           };
           ui = {
             default-command = "log";
-            diff-editor = lib.mkIf config.programs.helix.enable "hx";
           };
           signing = {
             behavior = "own";
