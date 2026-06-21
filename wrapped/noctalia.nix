@@ -131,9 +131,9 @@
               widget_spacing = 4;
             };
           };
-          # brightness = {
-          #   enable_ddcutil = true;
-          # };
+          brightness = {
+            enable_ddcutil = true;
+          };
           control_center.sidebar_section = "none";
 
           control_center.shortcuts = [

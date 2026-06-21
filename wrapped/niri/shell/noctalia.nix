@@ -5,7 +5,7 @@
     { pkgs, lib, ... }:
     let
       noctalia = lib.getExe self.packages.${pkgs.stdenv.hostPlatform.system}.noctalia;
-      monitor = "eDP-1";
+      monitor = "current";
     in
     {
       runtimePkgs = [
@@ -170,7 +170,7 @@
             } --lines 0 -d -p 'Brightness: ' --placeholder='40-450')"
           '';
         };
-        
+
         XF86MonBrightnessUp = _: {
           props.allow-when-locked = true;
           content.spawn = [
