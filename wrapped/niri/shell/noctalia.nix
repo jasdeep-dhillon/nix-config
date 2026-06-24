@@ -242,7 +242,6 @@
           props.allow-when-locked = true;
           content.spawn = [
             noctalia
-            noctalia
             "msg"
             "media"
             "next"
