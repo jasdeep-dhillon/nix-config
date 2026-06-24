@@ -15,11 +15,14 @@
           pkgs.steam.override {
             extraEnv = {
               MANGOHUD = true;
+              PROTON_DISCORD_BRIDGE = true;
             };
           }
         );
         extraCompatPackages = with pkgs; [
-          proton-ge-bin
+          (proton-ge-bin.override {
+            steamDisplayName = "Nix-Proton-GE";
+          })
         ];
         remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
         dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
