@@ -127,11 +127,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1781922826,
-        "narHash": "sha256-0ZYx2LmBj9fvF3Y8gIlYhGaIvKOh5CQb9TwSXd4wINw=",
+        "lastModified": 1782301335,
+        "narHash": "sha256-lctSy+zomaUni216fZDq1JeLMUY4w48nfWR7pCm9mBg=",
         "owner": "AvengeMedia",
         "repo": "dms-plugin-registry",
-        "rev": "46504c36544b88000a23c41b2cfe9e10dc7fde3c",
+        "rev": "653d0bedf1c5865cefc3b8272966b40423b6ff17",
         "type": "github"
       },
       "original": {
@@ -291,11 +291,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1781845942,
-        "narHash": "sha256-49EYKsWx7+EAzsMAyvelNTCea7RxNDhvJLpnCh5VFYo=",
+        "lastModified": 1782274574,
+        "narHash": "sha256-LvDMJlUwcPe6nIKjxwHfj/Xuw1omPCoMuXhNGj9C/yQ=",
         "owner": "Jasdeep-Dhillon",
         "repo": "helium-flake",
-        "rev": "2f5d0fe4115aeb6113a7b289790029d05b58b4f4",
+        "rev": "1a73b93477dd7efae1a512610815c52e2e487156",
         "type": "github"
       },
       "original": {
@@ -309,11 +309,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1781989573,
-        "narHash": "sha256-npfH7Zv7t1akX/ArqCNro4zU4ViPlghLaPnbEfHbCxk=",
+        "lastModified": 1782233665,
+        "narHash": "sha256-h/xOtrByoA/Ak1lWHn0O1lVZz4qWYbwOSLQ8YSwQO0I=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "78e7d8b13ecd7f5256a5c11ce216876164099d9f",
+        "rev": "062581938b4a378a82dfbb294b494808157153a1",
         "type": "github"
       },
       "original": {
@@ -595,11 +595,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1782004378,
-        "narHash": "sha256-0m57KDY8sDCLUfu+jDiO3qurY4so/X9D45xkz0ogtQE=",
+        "lastModified": 1782310114,
+        "narHash": "sha256-C+B3k1EllTWKv3RrMDxLetf/HQdVSoTEHEsKR3wFaZQ=",
         "owner": "noctalia-dev",
         "repo": "noctalia-shell",
-        "rev": "32b8bf48dd7455f563d468a4e635ca8c8b2c77ca",
+        "rev": "90a1c783b68d862c69bc20d5c46e68177eaa4dd6",
         "type": "github"
       },
       "original": {
@@ -768,11 +768,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1781943681,
-        "narHash": "sha256-NFHmA7H47adqiyp+0iEOyZOQhmigDqA/NBAlf4imB6U=",
+        "lastModified": 1782165805,
+        "narHash": "sha256-478kKQBvK6SYTOdN2h9jhKJv94nbXRbFMfuL1WshErg=",
         "owner": "Mic92",
         "repo": "sops-nix",
-        "rev": "420f8d2e9882911f65cfac15cc706f639ba96cca",
+        "rev": "56b24064fdcaedca53553b1a6d607fd23b613a24",
         "type": "github"
       },
       "original": {
@@ -801,11 +801,11 @@
         "tinted-zed": "tinted-zed"
       },
       "locked": {
-        "lastModified": 1781997134,
-        "narHash": "sha256-muBZG4O/agq/ljgHr6c3AsobIWgODAS6vf50xIS7o+Q=",
+        "lastModified": 1782310521,
+        "narHash": "sha256-vsxcG0i8e4EPfdnhMTKMVzD1825H2vG1BBslzom9wxg=",
         "owner": "nix-community",
         "repo": "stylix",
-        "rev": "a6a493119e492e15874caf6f7f8c7e572e64c655",
+        "rev": "e084d011e7ee9302aceaaf6c1fc28a9ace09e16a",
         "type": "github"
       },
       "original": {
@@ -954,11 +954,11 @@
         "rust-overlay": "rust-overlay_2"
       },
       "locked": {
-        "lastModified": 1781958314,
-        "narHash": "sha256-P0kQPSGyFKd2MHtXIL+lTl232TqXzQQ0jDFknLIPv8E=",
+        "lastModified": 1782197803,
+        "narHash": "sha256-PccrFfFh8FT4YgAdRSM9QMYXJbwJKuXfO7cWKVsfr8U=",
         "owner": "prankstr",
         "repo": "vibepanel",
-        "rev": "eba4c5f28f221e195ab894006bcdbbf7c3bf64c7",
+        "rev": "4331264f728fe9e26afe95bd4f117663629f0d44",
         "type": "github"
       },
       "original": {
@@ -972,11 +972,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1780661205,
-        "narHash": "sha256-3F5DixT3Gk91lBI9E+TGMm0ko5HrRbDiL23di16TJGA=",
+        "lastModified": 1782135443,
+        "narHash": "sha256-vAmbArdCyjqpVW+37aCy/PMBOLIqukUXLQuEKLwUhA4=",
         "owner": "BirdeeHub",
         "repo": "nix-wrapper-modules",
-        "rev": "8dd304c3582ddd339217e1cc5fb53f50acb63c2d",
+        "rev": "6e7f66fa2cdf4d63162580b438f7fcf87c28a46f",
         "type": "github"
       },
       "original": {
