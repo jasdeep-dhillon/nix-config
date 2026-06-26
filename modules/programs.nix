@@ -51,7 +51,7 @@
     };
 
   flake.homeModules.guiPrograms =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
     {
       programs.kitty = {
         enable = true;
@@ -76,6 +76,8 @@
         settings = {
           gpu_stats = true;
           gpu_temp = true;
+          background_alpha = lib.mkForce 0.4;
+          font_scale = lib.mkForce 1;
           # gpu_core_clock
           # gpu_mem_temp
           # gpu_mem_clock
