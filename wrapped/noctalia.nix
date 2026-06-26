@@ -81,6 +81,7 @@
       packages.noctalia = self.wrappersModules.noctalia.wrap {
         inherit pkgs;
         package = inputs.noctalia.packages.${pkgs.stdenv.hostPlatform.system}.default;
+        runtimePkgs = with pkgs; [ mpvpaper ];
         settings = {
           audio = {
             enable_overdrive = true;
@@ -100,12 +101,15 @@
                   fill = "on_secondary";
                   id = "control";
                   members = [
+                    "notifications"
+                    "clipboard"
+                    "mpvpaper"
                     "volume"
                     "brightness"
                     "battery"
                   ];
                   opacity = 0.4;
-                  padding = 6.0;
+                  padding = 8.0;
                 }
               ];
               capsule_opacity = 0.4;
@@ -114,20 +118,20 @@
               ];
               end = [
                 "tray"
-                "notifications"
-                "clipboard"
                 "group:control"
                 "control-center"
               ];
               margin_edge = 4;
               margin_ends = 4;
-              padding = 4;
+              padding = 8;
+              radius = 32;
               shadow = false;
               start = [
                 "launcher"
                 "media"
                 "clock"
               ];
+              thickness = 32;
               widget_spacing = 4;
             };
           };
@@ -188,6 +192,9 @@
               media = false;
             };
           };
+          plugins = {
+            enabled = [ "noctalia/mpvpaper" ];
+          };
           shell = {
             avatar_path = self.avatar;
             time_format = "{:%I:%M %P}";
@@ -204,21 +211,28 @@
             };
             panel = {
               attach_clipboard = true;
-              clipboard_placement = "attached";
+              clipboard_placement = "floating";
+              clipboard_position = "auto";
+              control_center_placement = "floating";
               attach_launcher = false;
               open_near_click_clipboard = true;
               open_near_click_control_center = true;
               open_near_click_launcher = true;
               transparency_mode = "soft";
-              session_placement = "centered";
+              session_placement = "floating";
+              session_position = "center";
               launcher_session_search = true;
               shadow = false;
+              wallpaper_placement = "floating";
             };
             screen_corners = {
               enabled = true;
               size = 8;
             };
             screen_time_enabled = true;
+            launcher = {
+              app_grid = true;
+            };
           };
           theme = {
             mode = "dark";
@@ -264,20 +278,24 @@
             media = {
               max_length = 200.0;
             };
+            mpvpaper = {
+              type = "noctalia/mpvpaper:mpvpaper";
+            };
             taskbar = {
               anchor = true;
               capsule = false;
               capsule_fill = "on_primary";
               capsule_foreground = "primary";
               capsule_padding = 4.0;
+              inactive_opacity = 0.5;
               group_by_workspace = true;
               hide_empty_workspaces = false;
               only_active_workspace = false;
               show_all_outputs = false;
               occupied_color = "tertiary";
               show_workspace_label = false;
-              workspace_label_placement = "inside";
-              scale = 1.25;
+              workspace_label_placement = "corner";
+              scale = 1.4;
             };
             tray = {
               drawer = false;
