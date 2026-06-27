@@ -25,8 +25,13 @@
               r#"^steam_app_[0-9]*"#
             '';
           }
+          { app-id = "steam_app_default"; }
         ];
         open-on-workspace = "game";
+      }
+      {
+        matches = [ { app-id = "steam"; } ];
+        open-fullscreen = false;
       }
 
       {
