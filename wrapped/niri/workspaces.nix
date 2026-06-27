@@ -30,8 +30,9 @@
         open-on-workspace = "game";
       }
       {
-        matches = [ { app-id = "steam"; } ];
+        matches = [ { app-id = ''r#"^steam$"#''; } ];
         open-fullscreen = false;
+        open-focused = false;
       }
 
       {
@@ -42,6 +43,7 @@
           { app-id = "com.github.th_ch.youtube_music"; }
         ];
         open-on-workspace = "chat";
+        open-focused = false;
       }
 
       {
