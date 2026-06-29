@@ -55,7 +55,10 @@
           ];
         };
         "Mod+F5" = {
-          spawn = [ noctalia ];
+          spawn = [
+            noctalia
+            "-d"
+          ];
         };
         "Mod+Space" = _: {
           props.cooldown-ms = 200;
@@ -119,16 +122,16 @@
             "settings-toggle"
           ];
         };
-        "Mod+F1" = _: {
-          props.repeat = false;
-          props.hotkey-overlay-title = "Lock Screen";
-          content.spawn = [
-            noctalia
-            "msg"
-            "session"
-            "lock"
-          ];
-        };
+        # "Mod+F1" = _: {
+        #   props.repeat = false;
+        #   props.hotkey-overlay-title = "Lock Screen";
+        #   content.spawn = [
+        #     noctalia
+        #     "msg"
+        #     "session"
+        #     "lock"
+        #   ];
+        # };
         "Mod+Escape" = _: {
           props.repeat = false;
           props.hotkey-overlay-title = "Power Menu";
