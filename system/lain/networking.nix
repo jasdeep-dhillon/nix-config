@@ -14,7 +14,6 @@
       };
       services.tailscale.permitCertUid = lib.mkIf config.services.caddy.enable config.services.caddy.user;
       services.tailscale.useRoutingFeatures = "client";
-
       services.caddy = {
         enable = true;
         virtualHosts = {

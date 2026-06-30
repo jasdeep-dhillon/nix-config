@@ -3,7 +3,7 @@
   flake.nixosConfigurations.lain = inputs.nixpkgs.lib.nixosSystem {
     modules = with self.nixosModules; [
       lain
-      
+
       base
       ssh-server
       jellyfin-server
@@ -11,6 +11,7 @@
       vcs
       programs
       qbit
+      containers
     ];
   };
 }
