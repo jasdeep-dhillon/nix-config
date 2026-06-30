@@ -40,10 +40,10 @@
             reverse_proxy 127.0.0.1:8092
           '';
 
-          "lain.tailc113f2.ts.net".extraConfig = ''
-            tls /var/lib/tailscale/certs/lain.tailc113f2.ts.net.crt /var/lib/tailscale/certs/lain.tailc113f2.ts.net.key
-            reverse_proxy 127.0.0.1:8092
-          '';
+          # "lain.tailc113f2.ts.net".extraConfig = ''
+          #   tls /var/lib/tailscale/certs/lain.tailc113f2.ts.net.crt /var/lib/tailscale/certs/lain.tailc113f2.ts.net.key
+          #   reverse_proxy 127.0.0.1:8092
+          # '';
 
           # "qbit.lain.tailc113f2.ts.net".extraConfig = ''
           #   tls /var/lib/tailscale/certs/lain.tailc113f2.ts.net.crt /var/lib/tailscale/certs/lain.tailc113f2.ts.net.key
