@@ -1,6 +1,9 @@
-{ ... }:
+{ self, ... }:
 {
-  flake.nixosModules.dev =
+  flake.nixosModules.dev = {
+    imports = [ self.nixosModules.containers ];
+  };
+  flake.nixosModules.containers =
     { pkgs, ... }:
     {
       # Enable Containers using Podman
