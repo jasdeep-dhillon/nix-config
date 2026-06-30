@@ -37,6 +37,9 @@
           ''
         ];
       };
+      systemd.services.cloudflare-warp.serviceConfig = {
+        After = [ "tailscaled.service" ];
+      };
       services.cloudflare-warp.enable = true;
       environment.systemPackages = [ pkgs.cloudflare-warp ];
     };
