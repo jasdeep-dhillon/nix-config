@@ -38,7 +38,7 @@
           mission-center
           video-trimmer
           # bitwarden-desktop
-          vesktop
+          # vesktop
           scrcpy
           qbittorrent
           telegram-desktop
