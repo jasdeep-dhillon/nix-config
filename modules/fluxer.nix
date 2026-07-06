@@ -9,6 +9,7 @@
     }:
     let
       inherit (config.sops) placeholder;
+      domain = "lain.tailc113f2.ts.net";
       caddyfile = pkgs.writeText "Caddyfile" ''
         {
           servers {
@@ -215,13 +216,13 @@
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
           FLUXER_ADMIN_BASE_PATH = "/admin";
-          FLUXER_ADMIN_ENDPOINT = "https://fluxer.lain.home/admin";
+          FLUXER_ADMIN_ENDPOINT = "https://${domain}/admin";
           FLUXER_ADMIN_HOST = "0.0.0.0";
-          FLUXER_ADMIN_OAUTH_REDIRECT_URI = "https://fluxer.lain.home/admin/oauth2_callback";
+          FLUXER_ADMIN_OAUTH_REDIRECT_URI = "https://${domain}/admin/oauth2_callback";
           FLUXER_ADMIN_PORT = "8080";
           FLUXER_API_ENDPOINT = "http://api:8080";
-          FLUXER_APP_ENDPOINT = "https://fluxer.lain.home";
-          FLUXER_STATIC_CDN_ENDPOINT = "https://fluxer.lain.home";
+          FLUXER_APP_ENDPOINT = "https://${domain}";
+          FLUXER_STATIC_CDN_ENDPOINT = "https://${domain}";
         };
         dependsOn = [
           "fluxer-api"
@@ -313,7 +314,7 @@
           FLUXER_APP_PROXY_HOST = "0.0.0.0";
           FLUXER_APP_PROXY_PORT = "8080";
           PUBLIC_BOOTSTRAP_API_ENDPOINT = "/api";
-          PUBLIC_BOOTSTRAP_API_PUBLIC_ENDPOINT = "https://fluxer.lain.home/api";
+          PUBLIC_BOOTSTRAP_API_PUBLIC_ENDPOINT = "https://${domain}/api";
         };
         dependsOn = [
           "fluxer-api"
@@ -401,9 +402,9 @@
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
           FLUXER_GATEWAY_LOGGER_LEVEL = "info";
-          FLUXER_GATEWAY_MEDIA_PROXY_ENDPOINT = "https://fluxer.lain.home/media";
+          FLUXER_GATEWAY_MEDIA_PROXY_ENDPOINT = "https://${domain}/media";
           FLUXER_GATEWAY_PORT = "8080";
-          FLUXER_GATEWAY_STATIC_CDN_ENDPOINT = "https://fluxer.lain.home";
+          FLUXER_GATEWAY_STATIC_CDN_ENDPOINT = "https://${domain}";
         };
         dependsOn = [
           "fluxer-nats"
@@ -439,7 +440,7 @@
         image = "ghcr.io/fluxerapp/fluxer-gifs:v1";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
-          FLUXER_MEDIA_PROXY_PUBLIC_ENDPOINT = "https://fluxer.lain.home/media";
+          FLUXER_MEDIA_PROXY_PUBLIC_ENDPOINT = "https://${domain}/media";
           FLUXER_SVC_MODE = "router";
           FLUXER_SVC_NAME = "gifs";
         };
@@ -476,7 +477,7 @@
         image = "ghcr.io/fluxerapp/fluxer-gifs:v1";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
-          FLUXER_MEDIA_PROXY_PUBLIC_ENDPOINT = "https://fluxer.lain.home/media";
+          FLUXER_MEDIA_PROXY_PUBLIC_ENDPOINT = "https://${domain}/media";
           FLUXER_SVC_MODE = "shard";
           FLUXER_SVC_NAME = "gifs";
           FLUXER_SVC_SHARD_ID = "0";
