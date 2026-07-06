@@ -6,12 +6,9 @@
 
       base
       ssh-server
-      jellyfin-server
       nvidia
       vcs
       programs
-      qbit
-      containers
     ];
   };
 }
