@@ -16,6 +16,7 @@
             extraEnv = {
               MANGOHUD = true;
               PROTON_DISCORD_BRIDGE = true;
+              PROTON_ENABLE_WAYLAND = true;
             };
           }
         );
@@ -70,6 +71,9 @@
       environment.sessionVariables = lib.mergeAttrsList [
         {
           STEAM_EXTRA_COMPAT_TOOLS_PATH = "\${HOME}/.steam/root/compatibilitytools.d";
+        }
+        {
+          PROTON_ENABLE_WAYLAND = "1";
         }
 
         (lib.optionalAttrs config.hardware.nvidia.enabled {
