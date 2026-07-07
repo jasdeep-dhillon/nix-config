@@ -26,18 +26,18 @@
         enable = true;
         httpsPort = 8443;
         virtualHosts = {
-          "media.lain".extraConfig = ''
+          "media.lain.home".extraConfig = ''
             tls internal {
               on_demand
             }
             reverse_proxy 127.0.0.1:8096
           '';
 
-          "qbit.lain".extraConfig = ''
+          "qbit.lain.home".extraConfig = ''
             tls internal {
               on_demand
             }
-            reverse_proxy 127.0.0.1:8080
+            reverse_proxy 127.0.0.1:8098
           '';
         };
       };
