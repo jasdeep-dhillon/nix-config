@@ -40,7 +40,7 @@
       systemd.services.cloudflare-warp.serviceConfig = {
         After = [ "tailscaled.service" ];
       };
-      services.cloudflare-warp.enable = true;
+      services.cloudflare-warp.enable = false;
       environment.systemPackages = [ pkgs.cloudflare-warp ];
     };
 }
