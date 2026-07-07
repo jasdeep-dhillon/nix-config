@@ -9,6 +9,7 @@
       services.qbittorrent = {
         enable = true;
         user = "arc";
+        webuiPort = 8098;
         profileDir = "/var/lib/qBittorrent";
         serverConfig = {
           LegalNotice.Accepted = true;
@@ -24,6 +25,7 @@
           # Needs to be the last one so password can be appended
           Preferences = {
             WebUI = {
+              HostHeaderValidation = false;
               Username = "arc";
               ReverseProxySupportEnabled = true;
             };
