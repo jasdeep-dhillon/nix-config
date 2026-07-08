@@ -96,6 +96,7 @@
               background_opacity = 0.8;
               capsule = true;
               capsule_fill = "on_secondary";
+              capsule_thickness = 0.8;
               capsule_group = [
                 {
                   fill = "on_secondary";
@@ -121,10 +122,13 @@
                 "group:control"
                 "control-center"
               ];
-              margin_edge = 4;
-              margin_ends = 4;
+              margin_edge = 0;
+              margin_ends = 0;
               padding = 8;
-              radius = 32;
+              radius_bottom_left = -4;
+              radius_bottom_right = -4;
+              radius_top_left = 0;
+              radius_top_right = 0;
               shadow = false;
               start = [
                 "launcher"
@@ -294,6 +298,7 @@
               show_all_outputs = false;
               occupied_color = "tertiary";
               show_workspace_label = false;
+              show_active_indicator = false;
               workspace_label_placement = "corner";
               scale = 1.4;
             };

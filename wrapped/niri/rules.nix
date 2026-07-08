@@ -143,7 +143,7 @@
         };
       }
       {
-        geometry-corner-radius = 8;
+        geometry-corner-radius = 4;
         clip-to-geometry = true;
       }
     ];

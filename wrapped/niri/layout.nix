@@ -2,7 +2,7 @@
 {
   flake.nixosModules.niriLayout = {
     settings.layout = {
-      gaps = 6;
+      gaps = 4;
       always-center-single-column = { };
       center-focused-column = "never";
       background-color = "#1E1E2E";
@@ -26,10 +26,10 @@
         off = { };
       };
       struts = {
-        # left = -2;
-        # right = -2;
+        left = -2;
+        right = -2;
         top = -2;
-        # bottom = -2;
+        bottom = -2;
       };
       tab-indicator = {
         place-within-column = { };
@@ -37,7 +37,7 @@
         width = 4;
         length = _: {
           props = {
-            total-proportion = 0.95;
+            total-proportion = 0.99;
           };
         };
         position = "bottom";
