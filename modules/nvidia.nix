@@ -41,5 +41,6 @@
           nvidiaSettings = true;
         };
       };
+      nixpkgs.config.cudaSupport = true;
     };
 }
