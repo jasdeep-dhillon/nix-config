@@ -29,10 +29,10 @@
       "Mod+Page_Down" = {
         focus-workspace-down = { };
       };
-      "Mod+Ctrl+J" = {
+      "Mod+Ctrl+K" = {
         focus-workspace-up = { };
       };
-      "Mod+Ctrl+K" = {
+      "Mod+Ctrl+J" = {
         focus-workspace-down = { };
       };
 
