@@ -181,7 +181,7 @@
             "msg"
             "brightness-up"
             monitor
-            "1"
+            "5"
           ];
         };
         "Mod+XF86AudioRaiseVolume" = _: {
@@ -191,7 +191,7 @@
             "msg"
             "brightness-up"
             monitor
-            "1"
+            "5"
           ];
         };
         "Mod+XF86AudioLowerVolume" = _: {
@@ -201,7 +201,7 @@
             "msg"
             "brightness-down"
             monitor
-            "1"
+            "5"
           ];
         };
         XF86MonBrightnessDown = _: {
@@ -211,7 +211,7 @@
             "msg"
             "brightness-down"
             monitor
-            "1"
+            "5"
           ];
         };
         XF86AudioPlay = _: {
