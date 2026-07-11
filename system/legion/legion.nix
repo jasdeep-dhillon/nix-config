@@ -15,7 +15,7 @@
       dev
       packages
       programs
-      # nixld
+      nixld
 
       legion
       {
