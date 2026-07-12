@@ -125,8 +125,8 @@
               margin_edge = 0;
               margin_ends = 0;
               padding = 8;
-              radius_bottom_left = -4;
-              radius_bottom_right = -4;
+              radius_bottom_left = 0;
+              radius_bottom_right = 0;
               radius_top_left = 0;
               radius_top_right = 0;
               shadow = false;
@@ -142,16 +142,19 @@
           brightness = {
             enable_ddcutil = true;
           };
-          control_center.sidebar_section = "none";
 
-          control_center.shortcuts = [
-            { type = "wifi"; }
-            { type = "bluetooth"; }
-            { type = "caffeine"; }
-            { type = "power_profile"; }
-            { type = "dark_mode"; }
-            { type = "notification"; }
-          ];
+          control_center = {
+            calendar.show_events_card = false;
+            sidebar_section = "none";
+            shortcuts = [
+              { type = "wifi"; }
+              { type = "bluetooth"; }
+              { type = "caffeine"; }
+              { type = "power_profile"; }
+              { type = "dark_mode"; }
+              { type = "notification"; }
+            ];
+          };
           desktop_widgets = {
             enabled = false;
           };
@@ -265,7 +268,7 @@
             clock = {
               format = " {:%A, %B %e } • {:%I:%M %P} ";
             };
-            volume.scroll_step = 2;
+            volume.scroll_step = 1;
             volume.show_label = false;
             brightness.show_label = false;
             battery = {
