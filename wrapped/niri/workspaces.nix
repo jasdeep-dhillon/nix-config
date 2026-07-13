@@ -40,31 +40,32 @@
           { app-id = "chrome-cinhimbnkkaeohfgghhklpknlkffjgod-Default"; }
           { app-id = "vesktop"; }
           { app-id = "discord"; }
-          { app-id = "com.github.th_ch.youtube_music"; }
+          { app-id = "com.github.th-ch.youtube-music"; }
         ];
         open-on-workspace = "chat";
         open-focused = false;
+        open-maximized-to-edges = true;
       }
 
-      {
-        matches = [
-          { app-id = "com.github.th_ch.youtube_music"; }
-          { app-id = "chrome-cinhimbnkkaeohfgghhklpknlkffjgod-Default"; }
-        ];
-        default-column-width = {
-          proportion = 0.7;
-        };
-      }
+      # {
+      #   matches = [
+      #     { app-id = "com.github.th-ch.youtube-music"; }
+      #     { app-id = "chrome-cinhimbnkkaeohfgghhklpknlkffjgod-Default"; }
+      #   ];
+      #   default-column-width = {
+      #     proportion = 0.7;
+      #   };
+      # }
 
-      {
-        matches = [
-          { app-id = "vesktop"; }
-          { app-id = "discord"; }
-        ];
-        default-column-width = {
-          proportion = 1.0;
-        };
-      }
+      # {
+      #   matches = [
+      #     { app-id = "vesktop"; }
+      #     { app-id = "discord"; }
+      #   ];
+      #   default-column-width = {
+      #     proportion = 1.0;
+      #   };
+      # }
     ];
   };
 }
