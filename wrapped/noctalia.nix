@@ -92,7 +92,6 @@
           };
           bar = {
             default = {
-              attach_panels = true;
               background_opacity = 0.8;
               capsule = true;
               capsule_fill = "on_secondary";
@@ -185,7 +184,6 @@
           };
           location = {
             auto_locate = true;
-            refresh_minutes = 60;
           };
           lockscreen = {
             blur_intensity = 0.0;
@@ -202,6 +200,9 @@
           plugins = {
             enabled = [ "noctalia/mpvpaper" ];
           };
+          plugin_settings."noctalia/mpvpaper" = {
+            video_directory = "/media/Storage/Wallpapers/Live/tsukihime";
+          };
           shell = {
             avatar_path = self.avatar;
             time_format = "{:%I:%M %P}";
@@ -217,18 +218,15 @@
               speed = 4.0;
             };
             panel = {
-              attach_clipboard = true;
               clipboard_placement = "floating";
               clipboard_position = "auto";
               control_center_placement = "floating";
-              attach_launcher = false;
               open_near_click_clipboard = true;
               open_near_click_control_center = true;
               open_near_click_launcher = true;
               transparency_mode = "soft";
               session_placement = "floating";
               session_position = "center";
-              launcher_session_search = true;
               shadow = false;
               wallpaper_placement = "floating";
             };
@@ -239,6 +237,7 @@
             screen_time_enabled = true;
             launcher = {
               app_grid = true;
+              session_search = true;
             };
           };
           theme = {
@@ -263,6 +262,9 @@
             monitors."eDP-1" = {
               path = self.wallpaper;
             };
+          };
+          weather = {
+            refresh_minutes = 40;
           };
           widget = {
             clock = {
