@@ -116,6 +116,10 @@
               center = [
                 "taskbar"
               ];
+              dead_zone = {
+                scroll_up_command = "niri msg action focus-workspace-up";
+                scroll_down_command = "niri msg action focus-workspace-down";
+              };
               end = [
                 "tray"
                 "group:control"
