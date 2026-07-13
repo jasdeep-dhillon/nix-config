@@ -76,8 +76,7 @@
       }
       {
         matches = [
-          { app-id = "^steam$"; }
-          { app-id = "^steam_app_default$"; }
+          { app-id = ''r#"^steam$"#''; }
           { title = "Error"; }
           { title = "Setup"; }
         ];
@@ -85,7 +84,7 @@
       }
       {
         excludes = [
-          { app-id = "^steam$"; }
+          { app-id = ''r#"^steam$"#''; }
           { title = "Error"; }
           { title = "^$"; }
         ];
@@ -95,10 +94,11 @@
           { title = "Marvel Rivals"; }
           { title = "Glace"; }
           { title = "Clair Obscur: Expedition 33  "; }
-          # { app-id = "^steam_app_[0-9]*$"; }
+          { app-id = ''r#"^steam_app_[0-9]*"#''; }
           { title = "Assassin's Creed IV Black Flag"; }
           { app-id = "gamescope"; }
           { app-id = "Minecraft"; }
+          { app-id = "steam_app_default"; }
         ];
         open-fullscreen = true;
         open-floating = false;

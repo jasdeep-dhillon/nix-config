@@ -20,11 +20,7 @@
           { app-id = "gamescope"; }
           { app-id = "labwc"; }
           { app-id = "faugus-launcher"; }
-          {
-            app-id = ''
-              r#"^steam_app_[0-9]*"#
-            '';
-          }
+          { app-id = ''r#"^steam_app_[0-9]*"#''; }
           { app-id = "steam_app_default"; }
         ];
         open-on-workspace = "game";
