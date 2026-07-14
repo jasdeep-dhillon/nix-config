@@ -145,7 +145,6 @@
           brightness = {
             enable_ddcutil = true;
           };
-
           control_center = {
             calendar.show_events_card = false;
             sidebar_section = "none";
@@ -208,6 +207,70 @@
             video_directory = "/media/Storage/Wallpapers/Live/tsukihime";
           };
           shell = {
+            animation = {
+              speed = 4.0;
+            };
+            session = {
+              grid = true;
+              grid_columns = 4;
+              actions = [
+                {
+                  action = "lock";
+                  countdown_seconds = 0.0;
+                  enabled = true;
+                  shortcut = "1";
+                  variant = "default";
+                }
+                {
+                  action = "logout";
+                  countdown_seconds = 3.0;
+                  enabled = true;
+                  shortcut = "2";
+                  variant = "default";
+                }
+                {
+                  action = "lock_and_suspend";
+                  countdown_seconds = 3.0;
+                  enabled = true;
+                  label = "Suspend";
+                  shortcut = "3";
+                  variant = "default";
+                }
+                {
+                  action = "reboot";
+                  countdown_seconds = 3.0;
+                  enabled = true;
+                  shortcut = "4";
+                  variant = "default";
+                }
+                {
+                  action = "command";
+                  command = "systemctl reboot --firmware-setup";
+                  countdown_seconds = 3.0;
+                  enabled = true;
+                  label = "UEFI";
+                  shortcut = "5";
+                  variant = "outline";
+                }
+                {
+                  action = "command";
+                  command = "systemctl reboot --boot-loader-entry=auto-windows";
+                  countdown_seconds = 3.0;
+                  enabled = true;
+                  glyph = "brand-windows-filled";
+                  label = "Windows";
+                  shortcut = "6";
+                  variant = "primary";
+                }
+                {
+                  action = "shutdown";
+                  countdown_seconds = 3.0;
+                  enabled = true;
+                  shortcut = "7";
+                  variant = "destructive";
+                }
+              ];
+            };
             avatar_path = self.avatar;
             time_format = "{:%I:%M %P}";
             launch_apps_as_systemd_services = true;
@@ -218,9 +281,6 @@
             polkit_agent = true;
             settings_show_advanced = true;
             telemetry_enabled = true;
-            animation = {
-              speed = 4.0;
-            };
             panel = {
               clipboard_placement = "floating";
               clipboard_position = "auto";

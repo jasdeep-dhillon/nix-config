@@ -9,7 +9,7 @@
           categories = [ "Utility" ];
           comment = "Boot to Windows";
           exec = ''
-            pkexec ${(lib.getExe pkgs.nushell)} -c "bootctl set-oneshot auto-windows; reboot"
+            ${pkgs.systemd}/bin/systemctl reboot --boot-loader-entry=auto-windows
           '';
           icon = ../../icons/windows.ico;
         };
