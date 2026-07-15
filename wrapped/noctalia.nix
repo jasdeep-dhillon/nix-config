@@ -301,7 +301,6 @@
             screen_time_enabled = true;
             launcher = {
               app_grid = true;
-              session_search = true;
             };
           };
           theme = {
