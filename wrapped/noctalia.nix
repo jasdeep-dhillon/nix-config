@@ -107,6 +107,7 @@
                     "volume"
                     "brightness"
                     "battery"
+                    "network"
                   ];
                   opacity = 0.4;
                   padding = 8.0;
@@ -352,6 +353,9 @@
             };
             mpvpaper = {
               type = "noctalia/mpvpaper:mpvpaper";
+            };
+            network = {
+              show_label = false;
             };
             taskbar = {
               anchor = true;
