@@ -4,15 +4,15 @@
     { pkgs, lib, ... }:
     {
       xdg.desktopEntries = {
-        "windows" = {
-          name = "Windows";
-          categories = [ "Utility" ];
-          comment = "Boot to Windows";
-          exec = ''
-            ${pkgs.systemd}/bin/systemctl reboot --boot-loader-entry=auto-windows
-          '';
-          icon = ../../icons/windows.ico;
-        };
+        # "windows" = {
+        #   name = "Windows";
+        #   categories = [ "Utility" ];
+        #   comment = "Boot to Windows";
+        #   exec = ''
+        #     ${pkgs.systemd}/bin/systemctl reboot --boot-loader-entry=auto-windows
+        #   '';
+        #   icon = ../../icons/windows.ico;
+        # };
         "warp-connect" = {
           name = "Warp Connect";
           categories = [ "Utility" ];
