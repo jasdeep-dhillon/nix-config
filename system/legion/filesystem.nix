@@ -2,7 +2,7 @@
 {
   flake.nixosModules.legion = {
     fileSystems."/media/Storage" = {
-      device = "/dev/disk/by-uuid/7050261a-762a-443d-a19f-b5b4d23049d3";
+      device = "/dev/disk/by-uuid/5f9c9143-71ed-486d-afec-342def106a30";
       fsType = "btrfs";
     };
 
