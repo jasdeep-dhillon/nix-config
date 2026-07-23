@@ -234,6 +234,7 @@
           palette = lib.mkForce "catppuccin_mocha";
           format = lib.concatStrings [
             "$hostname"
+            "$env_var"
             "$directory"
             "$git_branch"
             "$git_state"
@@ -268,6 +269,10 @@
             format = "[](fg:#7287fd)[  $path ]($style)[](fg:#7287fd)";
             style = "fg:#dce0e8 bg:#7287fd";
             truncation_length = 3;
+          };
+          env_var.DEVENV_ROOT = {
+            format = "[](fg:#a6e3a1)[ devenv ]($style)[](fg:#a6e3a1) ";
+            style = "fg:#1C3A5E bg:#a6e3a1";
           };
           fill = {
             symbol = " ";
@@ -483,62 +488,6 @@
           $env.config = $current
         ''
         + ''
-
-          export-env { $env.STARSHIP_SHELL = "nu"; load-env {
-              STARSHIP_SESSION_KEY: (random chars -l 16)
-              PROMPT_MULTILINE_INDICATOR: (
-                  ^starship prompt --continuation
-              )
-
-              # Does not play well with default character module.
-              # TODO: Also Use starship vi mode indicators?
-              PROMPT_INDICATOR: ""
-
-              PROMPT_COMMAND: {||
-                  (
-                      # The initial value of `$env.CMD_DURATION_MS` is always `0823`, which is an official setting.
-                      # See https://github.com/nushell/nushell/discussions/6402#discussioncomment-3466687.
-                      let cmd_duration = if $env.CMD_DURATION_MS == "0823" { 0 } else { $env.CMD_DURATION_MS };
-                      ^starship prompt
-                          --cmd-duration $cmd_duration
-                          $"--status=($env.LAST_EXIT_CODE)"
-                          --terminal-width (term size).columns
-                          ...(
-                              if (which "job list" | where type == built-in | is-not-empty) {
-                                  ["--jobs", (job list | length)]
-                              } else {
-                                  []
-                              }
-                          )
-                  )
-              }
-
-              config: ($env.config? | default {} | merge {
-                  render_right_prompt_on_last_line: true
-              })
-
-              PROMPT_COMMAND_RIGHT: {||
-                  (
-                      # The initial value of `$env.CMD_DURATION_MS` is always `0823`, which is an official setting.
-                      # See https://github.com/nushell/nushell/discussions/6402#discussioncomment-3466687.
-                      let cmd_duration = if $env.CMD_DURATION_MS == "0823" { 0 } else { $env.CMD_DURATION_MS };
-                      ^starship prompt
-                          --right
-                          --cmd-duration $cmd_duration
-                          $"--status=($env.LAST_EXIT_CODE)"
-                          --terminal-width (term size).columns
-                          ...(
-                              if (which "job list" | where type == built-in | is-not-empty) {
-                                  ["--jobs", (job list | length)]
-                              } else {
-                                  []
-                              }
-                          )
-                  )
-              }
-          }}
-        ''
-        + ''
           # devenv hook for nushell
           # Usage: Add to your config.nu:
           #   source (devenv hook nu | save --force ~/.cache/devenv/hook.nu; "~/.cache/devenv/hook.nu")
@@ -620,6 +569,71 @@
               }
           ))
 
+          # Strip out devenv's forced prompt modifications on startup
+          $env.config = ($env.config | upsert hooks.pre_prompt (
+              ($env.config | get -o hooks.pre_prompt | default []) | append {||
+                  if ("DEVENV_ROOT" in $env) {
+                      # Reset the prompt back to clean Starship, ignoring devenv's injection
+                      $env.PROMPT_COMMAND = {|| starship prompt --cmd-duration $env.CMD_DURATION_MS $"--status=($env.LAST_EXIT_CODE)" }
+                      $env.PROMPT_COMMAND_RIGHT = {|| starship prompt --right }
+                  }
+              }
+          ))
+        ''
+        + ''
+          export-env { $env.STARSHIP_SHELL = "nu"; load-env {
+              STARSHIP_SESSION_KEY: (random chars -l 16)
+              PROMPT_MULTILINE_INDICATOR: (
+                  ^starship prompt --continuation
+              )
+
+              # Does not play well with default character module.
+              # TODO: Also Use starship vi mode indicators?
+              PROMPT_INDICATOR: ""
+
+              PROMPT_COMMAND: {||
+                  (
+                      # The initial value of `$env.CMD_DURATION_MS` is always `0823`, which is an official setting.
+                      # See https://github.com/nushell/nushell/discussions/6402#discussioncomment-3466687.
+                      let cmd_duration = if $env.CMD_DURATION_MS == "0823" { 0 } else { $env.CMD_DURATION_MS };
+                      ^starship prompt
+                          --cmd-duration $cmd_duration
+                          $"--status=($env.LAST_EXIT_CODE)"
+                          --terminal-width (term size).columns
+                          ...(
+                              if (which "job list" | where type == built-in | is-not-empty) {
+                                  ["--jobs", (job list | length)]
+                              } else {
+                                  []
+                              }
+                          )
+                  )
+              }
+
+              config: ($env.config? | default {} | merge {
+                  render_right_prompt_on_last_line: true
+              })
+
+              PROMPT_COMMAND_RIGHT: {||
+                  (
+                      # The initial value of `$env.CMD_DURATION_MS` is always `0823`, which is an official setting.
+                      # See https://github.com/nushell/nushell/discussions/6402#discussioncomment-3466687.
+                      let cmd_duration = if $env.CMD_DURATION_MS == "0823" { 0 } else { $env.CMD_DURATION_MS };
+                      ^starship prompt
+                          --right
+                          --cmd-duration $cmd_duration
+                          $"--status=($env.LAST_EXIT_CODE)"
+                          --terminal-width (term size).columns
+                          ...(
+                              if (which "job list" | where type == built-in | is-not-empty) {
+                                  ["--jobs", (job list | length)]
+                              } else {
+                                  []
+                              }
+                          )
+                  )
+              }
+          }}
         '';
       };
       programs.carapace = {
