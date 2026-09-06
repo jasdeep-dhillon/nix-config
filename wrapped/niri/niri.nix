@@ -27,7 +27,6 @@
               hash = "sha256-aNovCzrTtmqTO33YtZap47npdN73zXC1bap5q5dZvZk=";
             };
           };
-        v2-settings = true;
         imports = with self.nixosModules; [
           niriInput
           niriLayout
