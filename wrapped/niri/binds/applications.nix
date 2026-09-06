@@ -2,6 +2,10 @@
 {
   flake.nixosModules.niriApplications =
     { pkgs, lib, ... }:
+    let
+      helium = lib.getExe inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.helium-widevine-beta;
+      zen-browser = (lib.getExe inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default);
+    in
     {
       settings.binds = {
 
@@ -23,14 +27,14 @@
           props.repeat = false;
           props.hotkey-overlay-title = "Helium";
           content.spawn = [
-            (lib.getExe inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default)
+            helium
           ];
         };
         "Mod+Shift+B" = _: {
           props.repeat = false;
           props.hotkey-overlay-title = "Incognito";
           content.spawn = [
-            (lib.getExe inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default)
+            helium
             "--incognito"
           ];
         };
@@ -56,14 +60,14 @@
           props.repeat = false;
           props.hotkey-overlay-title = "Zen Browser";
           content.spawn = [
-            (lib.getExe inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default)
+            zen-browser
           ];
         };
         "Mod+Shift+Z" = _: {
           props.repeat = false;
           props.hotkey-overlay-title = "Zen Private Window";
           content.spawn = [
-            (lib.getExe inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default)
+            zen-browser
             "--private-window"
           ];
         };

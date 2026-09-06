@@ -23,6 +23,15 @@
           set-dynamic-cast-monitor = { };
         };
       };
+      "Mod+F4" = _: {
+        props = {
+          repeat = false;
+          hotkey-overlay-title = "Unset workspace name";
+        };
+        content.spawn-sh = ''
+          niri msg action unset-workspace-name
+        '';
+      };
       "Mod+F7" = _: {
         props = {
           repeat = false;
