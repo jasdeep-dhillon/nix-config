@@ -33,7 +33,7 @@
     wrapper-modules.url = "github:BirdeeHub/nix-wrapper-modules";
     home-manager.url = "github:nix-community/home-manager";
     lanzaboote = {
-      url = "github:nix-community/lanzaboote/v1.1.0";
+      url = "github:nix-community/lanzaboote";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     run0-sudo-shim = {
