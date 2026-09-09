@@ -11,8 +11,17 @@
       home.packages = with pkgs; [
         nil
         nixd
+    
         jsonfmt
-        clang-tools
+
+        clang-tools #Clangd
+        cmake-language-server
+
+        vscode-langservers-extracted
+
+        yaml-language-server
+
+        rust-analyzer
       ];
     };
 }

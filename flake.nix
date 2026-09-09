@@ -55,6 +55,10 @@
       inputs.home-manager.follows = "home-manager";
     };
     # autolith.url = "github:lambda-symbolics/autolith";
+    helix-plugins = {
+      url = "github:maxschipper/helix-plugins-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     vibepanel = {
       url = "github:prankstr/vibepanel";
       inputs.nixpkgs.follows = "nixpkgs";
