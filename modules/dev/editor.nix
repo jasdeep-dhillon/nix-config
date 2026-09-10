@@ -9,7 +9,7 @@
     };
   };
   flake.homeModules.editor =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
     {
       nixpkgs.overlays = [ inputs.helix-plugins.overlays.default ];
       nixpkgs.config.allowUnfree = true;
@@ -117,6 +117,76 @@
           };
           theme = "catppuccin_mocha";
         };
+        languages.language = 
+          (
+            {
+              astro = "astro";
+              css = "css";
+              html = "html";
+              javascript = "js";
+              json = "json";
+              jsonc = "jsonc";
+              jsx = "jsx";
+              markdown = "md";
+              scss = "scss";
+              svelte = "svelte";
+              tsx = "tsx";
+              typescript = "ts";
+              vue = "vue";
+              yaml = "yaml";
+            }
+            |> builtins.mapAttrs (
+              name: extension:
+              {
+                inherit name;
+
+                auto-format = true;
+                formatter.command = (lib.getExe pkgs.deno);
+                formatter.args = [
+                  "fmt"
+                  "--unstable-component"
+                  "--ext"
+                  extension
+                  "-"
+                ];
+              }
+              //
+                lib.attrsets.optionalAttrs
+                  (lib.lists.elem name [
+                    "javascript"
+                    "jsx"
+                    "typescript"
+                    "tsx"
+                  ])
+                  {
+                    language-servers = [ "deno" ];
+                  }
+            )
+            |> lib.attrsets.attrValues
+          )
+          ++ [
+            {
+              name = "nix";
+              auto-format = true;
+              formatter.command = "nixfmt";
+            }
+
+            {
+              name = "python";
+              auto-format = true;
+              language-servers = [ "basedpyright" ];
+            }
+
+            {
+              name = "toml";
+              auto-format = true;
+            }
+
+            {
+              name = "rust";
+              auto-format = true;
+            }
+          ];
       };
     };
 }
