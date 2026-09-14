@@ -7,26 +7,42 @@
         inherit pkgs;
         runtimePkgs = with pkgs; [
           nirius
-          xwayland-satellite
+          (xwayland-satellite.overrideAttrs 
+            rec {
+              version = "0.8.1";
+              src = pkgs.fetchFromGitHub {
+                owner = "Supreeeme";
+                repo = "xwayland-satellite";
+                hash = "sha256-BUE41HjLIGPjq3U8VXPjf8asH8GaMI7FYdgrIHKFMXA=";
+                tag = "v${version}";
+              };
+              cargoHash = null;
+              cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
+                pname = "xwayland-satellite";
+                version = "0.8.1";
+                inherit src;
+                hash = "sha256-16L6gsvze+m7XCJlOA1lsPNELE3D364ef2FTdkh0rVY=";
+              };
+            }
+          )
           jq
           kdePackages.kirigami.unwrapped
         ];
-        package =
-          pkgs.niri.overrideAttrs rec {
-            src = pkgs.fetchFromGitHub {
-              owner = "willybarret";
-              repo = "niri";
-              rev = "dc0505f";
-              hash = "sha256-NmsIOdV1MW1GJ54rXOhPmD3DZJVP+c1qyim9nfWxREE=";
-            };
-            version = "26.04";
-            cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
-              pname = pkgs.niri.pname;
-              version = pkgs.niri.version;
-              src = src;
-              hash = "sha256-aNovCzrTtmqTO33YtZap47npdN73zXC1bap5q5dZvZk=";
-            };
+        package = pkgs.niri.overrideAttrs rec {
+          src = pkgs.fetchFromGitHub {
+            owner = "willybarret";
+            repo = "niri";
+            rev = "dc0505f";
+            hash = "sha256-NmsIOdV1MW1GJ54rXOhPmD3DZJVP+c1qyim9nfWxREE=";
           };
+          version = "26.04";
+          cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
+            pname = pkgs.niri.pname;
+            version = pkgs.niri.version;
+            src = src;
+            hash = "sha256-aNovCzrTtmqTO33YtZap47npdN73zXC1bap5q5dZvZk=";
+          };
+        };
         imports = with self.nixosModules; [
           niriInput
           niriLayout
