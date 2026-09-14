@@ -80,7 +80,6 @@
     {
       packages.noctalia = self.wrappersModules.noctalia.wrap {
         inherit pkgs;
-        runtimePkgs = with pkgs; [ mpvpaper ];
         settings = {
           audio = {
             enable_overdrive = true;
@@ -102,11 +101,10 @@
                   members = [
                     "notifications"
                     "clipboard"
-                    "mpvpaper"
                     "volume"
                     "brightness"
-                    "battery"
                     "network"
+                    "battery"
                   ];
                   opacity = 0.4;
                   padding = 8.0;
@@ -130,6 +128,7 @@
               margin_edge = 0;
               margin_ends = 0;
               padding = 8;
+              position = "bottom";
               radius_bottom_left = 0;
               radius_bottom_right = 0;
               radius_top_left = 0;
@@ -157,14 +156,29 @@
                   "launcher"
                   "media"
                 ];
+                position = "top";
+                reserve_space = true;
+                smart_auto_hide = false;
               };
             };
+          };
+          battery = {
+            warning_threshold = 30;
+            device."/org/freedesktop/UPower/devices/battery_kysona_0003o3554oF58Ax000A_battery".warning_threshold =
+              30;
           };
           brightness = {
             enable_ddcutil = true;
           };
+          calendar = {
+            enabled = true;
+            account.jdps2867 = {
+              name = "Main";
+              type = "google";
+            };
+          };
           control_center = {
-            calendar.show_events_card = false;
+            calendar.show_events_card = true;
             sidebar_section = "none";
             shortcuts = [
               { type = "wifi"; }
@@ -218,15 +232,12 @@
               media = false;
             };
           };
-          plugins = {
-            enabled = [ "noctalia/mpvpaper" ];
-          };
-          plugin_settings."noctalia/mpvpaper" = {
-            video_directory = "/media/Storage/Wallpapers/Live/tsukihime";
-          };
           shell = {
+            button_borders = false;
+            card_borders = false;
+            popup_shadows = false;
             animation = {
-              speed = 4.0;
+              speed = 2.0;
             };
             session = {
               grid = true;
@@ -310,6 +321,7 @@
               session_placement = "floating";
               session_position = "center";
               shadow = false;
+              borders = false;
               wallpaper_placement = "floating";
             };
             screen_corners = {
@@ -319,6 +331,10 @@
             screen_time_enabled = true;
             launcher = {
               app_grid = true;
+            };
+            screenshot = {
+              directory = "~/Pictures/Screenshots";
+              filename_pattern = "Screenshot_%Y-%m-%d_%H-%M-%S.png";
             };
           };
           theme = {
@@ -373,9 +389,6 @@
             media = {
               max_length = 200.0;
             };
-            mpvpaper = {
-              type = "noctalia/mpvpaper:mpvpaper";
-            };
             network = {
               show_label = false;
             };
@@ -413,7 +426,7 @@
 
             ipad_right = {
               type = "spacer";
-              length = 100;
+              length = 130;
             };
           };
         };
