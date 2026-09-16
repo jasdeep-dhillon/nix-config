@@ -56,11 +56,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789083147,
-        "narHash": "sha256-bpj5C7S4OY+M1hwFk0SPtuODRnO3HqRgnciGnMf1cCI=",
+        "lastModified": 1789553246,
+        "narHash": "sha256-it7h+4LEEzV98O1BgyU7aqNvYEnDQ4oYPSKSUAsE4I4=",
         "owner": "Jasdeep-Dhillon",
         "repo": "helium-flake",
-        "rev": "d37672bc4e2a035970de60600badad894e816a9d",
+        "rev": "b8790c9156569235b809b4c1354affe95c9f1be5",
         "type": "github"
       },
       "original": {
@@ -200,11 +200,11 @@
     },
     "nixpkgs_2": {
       "locked": {
-        "lastModified": 1789286504,
-        "narHash": "sha256-eiEK7cKZORNEvX0GeF3RtNEF/JXhgf2RqSp3230q13E=",
+        "lastModified": 1789426278,
+        "narHash": "sha256-GnotcvKtbTMnoVx6G4E7ZdUX6487Dky74dqq3pU7iRk=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "ef34387ddd751e1ab8857adf4676492d32eb24ec",
+        "rev": "efe6f071ede9d21c37462d2d6682d5e670099684",
         "type": "github"
       },
       "original": {
@@ -394,11 +394,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1789502641,
-        "narHash": "sha256-WWiyJaRKMeAlxbrCaHV3Bw2l8H78lSRX1KPcth+Xi6k=",
+        "lastModified": 1789533592,
+        "narHash": "sha256-8oEUwQ3QKYIMPDPDS8b/IiQg4jR6Fbp/7l/IFopRYc0=",
         "owner": "0xc000022070",
         "repo": "zen-browser-flake",
-        "rev": "af28d05de9c7deff95006c9b812dc9d31a6332af",
+        "rev": "5bc359ec4e967a852cb3723dd2f56eb2f4414bc2",
         "type": "github"
       },
       "original": {
