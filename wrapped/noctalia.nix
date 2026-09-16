@@ -316,6 +316,7 @@
               control_center_placement = "floating";
               open_near_click_clipboard = true;
               open_near_click_control_center = true;
+              launcher_placement = "attached";
               open_near_click_launcher = true;
               transparency_mode = "soft";
               session_placement = "floating";
