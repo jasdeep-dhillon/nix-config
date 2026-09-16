@@ -5,11 +5,11 @@
       imports = [ self.homeModules.agents ];
     };
   };
-  flake.homeModules.agents = {... }: {
+  flake.homeModules.agents = { pkgs, ... }: {
     programs.opencode = {
       enable = true;
       enableMcpIntegration = true;
     };
-    # home.packages = [ inputs.autolith.packages.${pkgs.stdenv.hostPlatform.system}.default ];
+    home.packages = [ pkgs.opencode-desktop ];
   };
 }
