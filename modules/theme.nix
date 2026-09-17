@@ -1,4 +1,4 @@
-{ ... }:
+{ self, ... }:
 {
   flake.nixosModules.theme =
     { pkgs, ... }:
@@ -14,18 +14,6 @@
     };
   flake.homeModules.theme =
     { pkgs, lib, ... }:
-    let
-      aosp-cursor = pkgs.stdenvNoCC.mkDerivation {
-        name = "AOSP-Cursors";
-        src = ../cursor-theme;
-        installPhase = ''
-          runHook preInstall
-          mkdir -p $out/share/icons/AOSP-Cursors
-          cp -r * $out/share/icons/AOSP-Cursors
-          runHook postInstall
-        '';
-      };
-    in
     {
       home.file."Pictures/Wallpapers" = {
         source = ../wallpapers;
@@ -883,7 +871,7 @@
       home.pointerCursor = lib.mkDefault {
         enable = true;
         name = "AOSP-Cursors";
-        package = aosp-cursor;
+        package = self.packages.${pkgs.stdenv.hostPlatform.system}.aosp-cursors;
         size = 18;
         hyprcursor = {
           enable = true;
