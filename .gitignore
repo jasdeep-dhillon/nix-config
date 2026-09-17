@@ -26,5 +26,7 @@
 !*.nix
 !*.md
 
+!packages/
+!packages/aosp-cursor.nix
 
 keys.txt
