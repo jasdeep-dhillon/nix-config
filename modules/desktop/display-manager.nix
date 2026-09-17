@@ -48,4 +48,18 @@
         plasma-desktop
       ];
     };
+
+  flake.nixosModules.noctalia-greeter = { pkgs, ... }: {
+    services.displayManager.noctalia-greeter = {
+      enable = true;
+      settings = {
+        cursor.size = 24;
+        keyboard.layout = "us";
+      };
+      cursorTheme = {
+        package = self.packages.${pkgs.stdenv.hostPlatform.system}.aosp-cursors;
+        name = "AOSP-Cursors";
+      };
+    };
+  };
 }

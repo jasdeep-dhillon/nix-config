@@ -4,7 +4,7 @@
     { pkgs, ... }:
     {
       imports = with self.nixosModules; [
-        sddm
+        noctalia-greeter
         window-manager
         theme
       ];
