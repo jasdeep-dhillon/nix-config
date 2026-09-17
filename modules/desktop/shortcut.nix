@@ -21,7 +21,7 @@
         "helium-incognito" = {
           name = "Helium Incognito";
           exec = "${
-            lib.getExe inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.default
+            lib.getExe inputs.helium.packages.${pkgs.stdenv.hostPlatform.system}.helium-widevine-beta
           } --incognito";
           genericName = "Web Browser";
           icon = ../../icons/helium.png;
