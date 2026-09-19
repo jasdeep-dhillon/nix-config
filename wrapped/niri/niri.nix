@@ -9,17 +9,17 @@
           nirius
           (xwayland-satellite.overrideAttrs 
             rec {
-              version = "0.8.1";
+              version = "add2795";
               src = pkgs.fetchFromGitHub {
                 owner = "Supreeeme";
                 repo = "xwayland-satellite";
                 hash = "sha256-BUE41HjLIGPjq3U8VXPjf8asH8GaMI7FYdgrIHKFMXA=";
-                tag = "v${version}";
+                rev = "add2795";
               };
               cargoHash = null;
               cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
                 pname = "xwayland-satellite";
-                version = "0.8.1";
+                version = "add2795";
                 inherit src;
                 hash = "sha256-16L6gsvze+m7XCJlOA1lsPNELE3D364ef2FTdkh0rVY=";
               };
