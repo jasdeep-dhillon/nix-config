@@ -32,7 +32,7 @@
           src = pkgs.fetchFromGitHub {
             owner = "willybarret";
             repo = "niri";
-            rev = "dc0505f";
+            rev = "7fd585d";
             hash = "sha256-NmsIOdV1MW1GJ54rXOhPmD3DZJVP+c1qyim9nfWxREE=";
           };
           version = "26.04";
