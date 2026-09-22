@@ -156,7 +156,6 @@
                   "launcher"
                   "media"
                 ];
-                position = "top";
                 reserve_space = true;
                 smart_auto_hide = false;
               };
@@ -184,9 +183,9 @@
               { type = "wifi"; }
               { type = "bluetooth"; }
               { type = "caffeine"; }
-              { type = "power_profile"; }
               { type = "dark_mode"; }
               { type = "notification"; }
+              { type = "nightlight"; }
             ];
           };
           desktop_widgets = {
@@ -316,7 +315,7 @@
               control_center_placement = "floating";
               open_near_click_clipboard = true;
               open_near_click_control_center = true;
-              launcher_placement = "attached";
+              launcher_placement = "floating";
               open_near_click_launcher = true;
               transparency_mode = "soft";
               session_placement = "floating";
