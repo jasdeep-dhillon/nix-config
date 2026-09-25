@@ -7,24 +7,22 @@
         inherit pkgs;
         runtimePkgs = with pkgs; [
           nirius
-          (xwayland-satellite.overrideAttrs 
-            rec {
+          (xwayland-satellite.overrideAttrs rec {
+            version = "0.8.3";
+            src = pkgs.fetchFromGitHub {
+              owner = "Supreeeme";
+              repo = "xwayland-satellite";
+              hash = "sha256-eFEjCCniMCKeWU0PcZNv+tDYe08SLFPjRplyPY8OFt4=";
+              rev = "v${version}";
+            };
+            cargoHash = "sha256-gMGFvnbxM3hD5fmkSimaFd87GEf6BXFe/MGjoS6VNVU=";
+            cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
+              pname = "xwayland-satellite";
               version = "add2795";
-              src = pkgs.fetchFromGitHub {
-                owner = "Supreeeme";
-                repo = "xwayland-satellite";
-                hash = "sha256-BUE41HjLIGPjq3U8VXPjf8asH8GaMI7FYdgrIHKFMXA=";
-                rev = "add2795";
-              };
-              cargoHash = null;
-              cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
-                pname = "xwayland-satellite";
-                version = "add2795";
-                inherit src;
-                hash = "sha256-16L6gsvze+m7XCJlOA1lsPNELE3D364ef2FTdkh0rVY=";
-              };
-            }
-          )
+              inherit src;
+              hash = "sha256-gMGFvnbxM3hD5fmkSimaFd87GEf6BXFe/MGjoS6VNVU=";
+            };
+          })
           jq
           kdePackages.kirigami.unwrapped
         ];
