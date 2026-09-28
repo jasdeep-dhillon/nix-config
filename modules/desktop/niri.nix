@@ -35,5 +35,31 @@
           "org.freedesktop.impl.portal.FileChooser" = [ "gnome" ];
         };
       };
+
+      # Niri Nvidia rule
+      environment.etc."nvidia/nvidia-application-profiles-rc.d/50-niri.json".text = ''
+        {
+          "rules": [
+            {
+              "pattern": {
+                "feature": "procname",
+                "matches": "niri"
+              },
+              "profile": "niri"
+            }
+          ],
+          "profiles": [
+            {
+              "name": "niri",
+              "settings": [
+                {
+                  "key": "GLVidHeapReuseRatio",
+                  "value": 0
+                }
+              ]
+            }
+          ]
+        }
+      '';
     };
 }
