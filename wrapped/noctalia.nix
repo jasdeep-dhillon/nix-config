@@ -144,15 +144,15 @@
               thickness = 32;
               widget_spacing = 4;
 
-              monitor.ipad = {
+              monitor.sunshine = {
                 end = [
                   "tray"
                   "group:control"
                   "control-center"
-                  "ipad_right"
+                  "sunshine_right"
                 ];
                 start = [
-                  "ipad_left"
+                  "sunshine_left"
                   "launcher"
                   "media"
                 ];
@@ -419,14 +419,14 @@
               occupied_color = "primary";
             };
 
-            ipad_left = {
+            sunshine_left = {
               type = "spacer";
-              length = 160;
+              length = 20;
             };
 
-            ipad_right = {
+            sunshine_right = {
               type = "spacer";
-              length = 130;
+              length = 20;
             };
           };
         };

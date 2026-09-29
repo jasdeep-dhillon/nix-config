@@ -29,7 +29,7 @@
         # scroll-method = "no-scroll";
       };
       touch = {
-        map-to-output = "ipad";
+        map-to-output = "sunshine";
       };
     };
   };

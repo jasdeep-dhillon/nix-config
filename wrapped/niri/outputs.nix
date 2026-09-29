@@ -36,8 +36,8 @@
         focus-at-startup = { };
 
       };
-      "ipad" = {
-        mode = "2778x1940@120";
+      "sunshine" = {
+        # mode = "2778x1940@120";
         position = _: {
           props = {
             x = -1389;
