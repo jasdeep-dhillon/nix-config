@@ -55,13 +55,12 @@
       inputs.home-manager.follows = "home-manager";
     };
     # autolith.url = "github:lambda-symbolics/autolith";
-    helix-plugins = {
-      url = "github:maxschipper/helix-plugins-nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
     blip = {
       url = "github:blip-net/nix";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    mitos = {
+      url = "github:mitos-editor/mitos";
     };
     # vibepanel = {
     #   url = "github:prankstr/vibepanel";

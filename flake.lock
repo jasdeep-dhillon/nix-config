@@ -89,27 +89,6 @@
         "type": "github"
       }
     },
-    "helix-plugins": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
-        "systems": "systems"
-      },
-      "locked": {
-        "lastModified": 1790803764,
-        "narHash": "sha256-U1G2gdSnq+Y2nGaa4iQuVDHaKx73NvkGDXD6qz5vpdk=",
-        "owner": "maxschipper",
-        "repo": "helix-plugins-nix",
-        "rev": "9d5dbb77eaed7259aa2dff85146bdfa70b25a438",
-        "type": "github"
-      },
-      "original": {
-        "owner": "maxschipper",
-        "repo": "helix-plugins-nix",
-        "type": "github"
-      }
-    },
     "home-manager": {
       "inputs": {
         "nixpkgs": "nixpkgs"
@@ -166,6 +145,24 @@
         "type": "github"
       }
     },
+    "mitos": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "lastModified": 1791230422,
+        "narHash": "sha256-usysAIb3QCii1vce9Rx8yjJw1vW2loqpri+SQZm5hOo=",
+        "owner": "mitos-editor",
+        "repo": "mitos",
+        "rev": "e3b047d4c65fcd39875ab33e283273b4e83f545c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mitos-editor",
+        "repo": "mitos",
+        "type": "github"
+      }
+    },
     "nix-github-actions": {
       "inputs": {
         "nixpkgs": [
@@ -217,6 +214,22 @@
     },
     "nixpkgs_2": {
       "locked": {
+        "lastModified": 1790185690,
+        "narHash": "sha256-xJ+X4hBtOcAFGBOe5nAMyMUeF9foJBmIOu3NjBqBycU=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "4975466d324710c576dc11ad614684e6bd8cad8e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
         "lastModified": 1791179034,
         "narHash": "sha256-Ni0LBydzaCi8oek12r4mVreuFHqYlM1eTD6SfiENKfw=",
         "owner": "nixos",
@@ -231,7 +244,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_3": {
+    "nixpkgs_4": {
       "locked": {
         "lastModified": 1788431191,
         "narHash": "sha256-MFClkboDeW56feBCAeAV3Z3J2quGSZFlAOXQ4JjIlIA=",
@@ -274,11 +287,11 @@
         "blip": "blip",
         "flake-parts": "flake-parts",
         "helium": "helium",
-        "helix-plugins": "helix-plugins",
         "home-manager": "home-manager",
         "import-tree": "import-tree",
         "lanzaboote": "lanzaboote",
-        "nixpkgs": "nixpkgs_2",
+        "mitos": "mitos",
+        "nixpkgs": "nixpkgs_3",
         "run0-sudo-shim": "run0-sudo-shim",
         "sops-nix": "sops-nix",
         "wrapper-modules": "wrapper-modules",
@@ -348,22 +361,6 @@
         "type": "github"
       }
     },
-    "systems": {
-      "locked": {
-        "lastModified": 1774449309,
-        "narHash": "sha256-brhZ8DmuGtzkCYHJg4HEd602amKm89Y9ytsFZ5uWD1w=",
-        "owner": "nix-systems",
-        "repo": "default",
-        "rev": "c29398b59d2048c4ab79345812849c9bd15e9150",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-systems",
-        "ref": "future-26.11",
-        "repo": "default",
-        "type": "github"
-      }
-    },
     "treefmt-nix": {
       "inputs": {
         "nixpkgs": [
@@ -387,7 +384,7 @@
     },
     "wrapper-modules": {
       "inputs": {
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_4"
       },
       "locked": {
         "lastModified": 1788981141,
