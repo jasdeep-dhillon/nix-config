@@ -55,10 +55,9 @@
           ];
         };
         "Mod+F5" = {
-          spawn = [
-            noctalia
-            "-d"
-          ];
+          spawn-sh = ''
+            pkill noctalia; ${noctalia} -d
+          '';
         };
         "Mod+Space" = _: {
           # props.cooldown-ms = 200;
