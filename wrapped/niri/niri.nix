@@ -65,6 +65,7 @@
           };
           cursor = {
             hide-when-typing = { };
+            xcursor-size = self.cursorSize;
           };
           overview = {
             zoom = 0.6;

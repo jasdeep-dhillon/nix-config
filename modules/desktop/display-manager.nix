@@ -53,7 +53,7 @@
     services.displayManager.noctalia-greeter = {
       enable = true;
       settings = {
-        cursor.size = 24;
+        cursor.size = self.cursorSize;
         keyboard.layout = "us";
       };
       cursorTheme = {

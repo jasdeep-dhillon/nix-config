@@ -872,10 +872,10 @@
         enable = true;
         name = "AOSP-Cursors";
         package = self.packages.${pkgs.stdenv.hostPlatform.system}.aosp-cursors;
-        size = 18;
+        size = self.cursorSize;
         hyprcursor = {
           enable = true;
-          size = 18;
+          size = self.cursorSize;
         };
         gtk.enable = true;
       };

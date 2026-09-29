@@ -13,6 +13,9 @@
       avatar = inputs.nixpkgs.lib.mkOption {
         default = { };
       };
+      cursorSize = inputs.nixpkgs.lib.mkOption {
+        default = 18;
+      };
     };
   };
 
