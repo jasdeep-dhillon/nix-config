@@ -59,6 +59,10 @@
       url = "github:maxschipper/helix-plugins-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    blip = {
+      url = "github:blip-net/nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     # vibepanel = {
     #   url = "github:prankstr/vibepanel";
     #   inputs.nixpkgs.follows = "nixpkgs";

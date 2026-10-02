@@ -1,4 +1,4 @@
-{ self, ... }:
+{ self, inputs, ... }:
 {
   flake.nixosModules.programs =
     { pkgs, ... }:
@@ -29,7 +29,10 @@
     { pkgs, config, ... }:
     {
       home-manager.users.arc = {
-        imports = [ self.homeModules.guiPrograms ];
+        imports = [
+          self.homeModules.guiPrograms
+          inputs.blip.homeModules.default
+        ];
       };
       programs.obs-studio = {
         enable = true;
@@ -175,6 +178,7 @@
           occivink.encode
         ];
       };
+      programs.blip.enable = true;
     };
 
   flake.homeModules.programs =
