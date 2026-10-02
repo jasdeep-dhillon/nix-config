@@ -31,14 +31,14 @@
             owner = "willybarret";
             repo = "niri";
             rev = "7fd585d";
-            hash = "sha256-NmsIOdV1MW1GJ54rXOhPmD3DZJVP+c1qyim9nfWxREE=";
+            hash = "sha256-OWF03QF62Q8HJ3fCme3I3GX7dKX9YU+JD7bhTiIzfQ4=";
           };
           version = "26.04";
           cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
             pname = pkgs.niri.pname;
             version = pkgs.niri.version;
             src = src;
-            hash = "sha256-aNovCzrTtmqTO33YtZap47npdN73zXC1bap5q5dZvZk=";
+            hash = "sha256-Yqvambc4F7PdGkGxrxp5xD6PqAEAWmMgqOYZRY+TIBA=";
           };
         };
         imports = with self.nixosModules; [
