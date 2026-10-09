@@ -7,22 +7,7 @@
         inherit pkgs;
         runtimePkgs = with pkgs; [
           nirius
-          (xwayland-satellite.overrideAttrs rec {
-            version = "0.8.3";
-            src = pkgs.fetchFromGitHub {
-              owner = "Supreeeme";
-              repo = "xwayland-satellite";
-              hash = "sha256-eFEjCCniMCKeWU0PcZNv+tDYe08SLFPjRplyPY8OFt4=";
-              rev = "v${version}";
-            };
-            cargoHash = "sha256-gMGFvnbxM3hD5fmkSimaFd87GEf6BXFe/MGjoS6VNVU=";
-            cargoDeps = pkgs.rustPlatform.fetchCargoVendor {
-              pname = "xwayland-satellite";
-              version = "add2795";
-              inherit src;
-              hash = "sha256-gMGFvnbxM3hD5fmkSimaFd87GEf6BXFe/MGjoS6VNVU=";
-            };
-          })
+          xwayland-satellite
           jq
           kdePackages.kirigami.unwrapped
         ];
