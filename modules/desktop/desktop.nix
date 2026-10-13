@@ -14,7 +14,8 @@
         fonts
         scheduler
         jellyfin-client
-        self.nixosModules.guiPrograms
+        input-share
+        guiPrograms
       ];
       systemd.user.services.tailscale-systray = {
         enable = true;

@@ -24,15 +24,18 @@
         package = self.packages.${pkgs.stdenv.hostPlatform.system}.niri;
       };
       xdg.portal = {
+        enable = true;
         xdgOpenUsePortal = true;
         extraPortals = with pkgs; [
           xdg-desktop-portal-gnome
-          kdePackages.xdg-desktop-portal-kde
+          xdg-desktop-portal-gtk
         ];
-        configPackages = with pkgs; [ kdePackages.xdg-desktop-portal-kde ];
-        config.common = {
-          default = [ "gnome" ];
-          "org.freedesktop.impl.portal.FileChooser" = [ "gnome" ];
+        config.niri = {
+          default = [ "gnome" "gtk" ];
+          "org.freedesktop.impl.portal.Access" = "gtk";
+          "org.freedesktop.impl.portal.FileChooser" = "gtk";
+          "org.freedesktop.impl.portal.Notification" = "gtk";
+          "org.freedesktop.impl.portal.Secret" = "gnome-keyring";
         };
       };
 
