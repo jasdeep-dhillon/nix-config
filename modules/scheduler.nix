@@ -52,19 +52,6 @@
             "include descends=\"steam\""
           ];
         };
-        "comp-games" = {
-          nice = -20;
-          class = "rr";
-          prio = 90;
-          ioClass = "best-effort";
-          ioPrio = 4;
-          matchers = [
-            "Overwatch.exe"
-            "cs2"
-            "ULTRAKILL.exe"
-            "deadlock.exe"
-          ];
-        };
         "desktop-environment" = {
           nice = -3;
           ioClass = "best-effort";
@@ -170,7 +157,8 @@
           };
         };
         cfsProfiles = {
-          enable = true;
+          # Ineffective once sched_ext owns scheduling; keep off to avoid confusion.
+          enable = false;
           responsive.preempt = "full";
         };
       };
@@ -194,9 +182,10 @@
       ];
     };
 
-    # services.scx = {
-    #   enable = true;
-    #   scheduler = "scx_lavd";
-    # };
+    services.scx = {
+      enable = true;
+      scheduler = "scx_lavd";
+      extraArgs = [ "--autopilot" ];
+    };
   };
 }
