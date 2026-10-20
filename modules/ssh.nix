@@ -9,7 +9,7 @@
           AllowUsers = [ "arc" ];
           PasswordAuthentication = false;
           KbdInteractiveAuthentication = false;
-          PermitRootLogin = "yes";
+          PermitRootLogin = "no";
         };
       };
     };

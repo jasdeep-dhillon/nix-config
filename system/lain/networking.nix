@@ -10,7 +10,7 @@
     let
       caddyWithPlugin = pkgs.caddy.withPlugins {
         plugins = [ "github.com/tailscale/caddy-tailscale@v0.0.0-20260106222316-bb080c4414ac" ];
-        hash = "sha256-o0oG/9hROjDl69AeuxUhhFVTsdluHJ8VyENVk1KHCOI=";
+          hash = "sha256-uZzS2DTcWan8E1NxQbI0sARNT7afpOrReUQmXi3c6Co=";
       };
       caddyImage = pkgs.dockerTools.buildImage {
         name = "caddy-tailscale";

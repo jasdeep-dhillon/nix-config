@@ -14,13 +14,14 @@
       caddyfile = pkgs.writeText "Caddyfile" ''
         {
           servers {
-            trusted_proxies static {$FLUXER_EDGE_TRUSTED_PROXIES:private_ranges}
+            trusted_proxies static {''$FLUXER_EDGE_TRUSTED_PROXIES:private_ranges}
             trusted_proxies_strict
           }
+          {''$FLUXER_EDGE_GLOBAL_OPTIONS}
         }
 
         {''$FLUXER_EDGE_SITE_ADDRESS} {
-          encode zstd gzip
+          encode {''$FLUXER_EDGE_ENCODE:zstd gzip}
 
           handle /_health {
             respond "OK" 200
@@ -47,16 +48,16 @@
             reverse_proxy livekit:7880
           }
 
-          handle /admin {
+          handle {''$FLUXER_ADMIN_BASE_PATH:/admin} {
             rewrite * /
             reverse_proxy admin:8080
           }
 
-          handle_path /admin/* {
+          handle_path {''$FLUXER_ADMIN_BASE_PATH:/admin}/* {
             reverse_proxy admin:8080
           }
 
-          @staticAssets path /web/* /emoji/* /libs/* /avatars/* /badges/* /desktop/* /embeds/*
+          @staticAssets path /fonts/* /web/* /emoji/* /libs/* /avatars/* /badges/* /desktop/* /embeds/*
           handle @staticAssets {
             reverse_proxy static-proxy:8080
           }
@@ -76,24 +77,6 @@
           }
         }
       '';
-      livekitYaml = pkgs.writeText "livekit.yaml" ''
-        port: 7880
-        log_level: info
-
-        rtc:
-          tcp_port: 7881
-          udp_port: 7882
-          node_ip: 100.104.114.77
-          use_external_ip: false
-          stun_servers:
-            - stun.l.google.com:19302
-            - stun1.l.google.com:19302
-
-        webhook:
-          api_key: fluxer
-          urls:
-            - http://api:8080/webhooks/livekit
-      '';
 
       # Healthchecks (JSON arrays, passed to podman's --health-cmd).
       hcSvc = ''["CMD","bash","-c","exec 3<>/dev/tcp/127.0.0.1/8090 && printf 'GET /_health HTTP/1.0\\r\\n\\r\\n' >&3 && head -n 1 <&3 | grep -q ' 200 '"]'';
@@ -106,7 +89,7 @@
         "/bin/sh"
         "-c"
         ''
-          buckets="$FLUXER_S3_BUCKET_CDN $FLUXER_S3_BUCKET_UPLOADS $FLUXER_S3_BUCKET_DOWNLOADS $FLUXER_S3_BUCKET_REPORTS $FLUXER_S3_BUCKET_HARVESTS";
+          buckets="$FLUXER_S3_BUCKET_CDN $FLUXER_S3_BUCKET_UPLOADS $FLUXER_S3_BUCKET_REPORTS $FLUXER_S3_BUCKET_HARVESTS";
           missing="$buckets";
           for attempt in $(seq 1 60); do
             if ! nc -z seaweedfs 9333 2>/dev/null; then
@@ -158,6 +141,7 @@
         "fluxer/s3_secret_key" = { };
         "fluxer/sudo_mode_secret" = { };
         "fluxer/connection_initiation_secret" = { };
+        "fluxer/profile_pseudonym_secret" = { };
         "fluxer/gateway_rpc_auth_token" = { };
         "fluxer/erlang_cookie" = { };
         "fluxer/media_proxy_secret_key" = { };
@@ -207,7 +191,6 @@
           FLUXER_S3_FORCE_PATH_STYLE=true
           FLUXER_S3_BUCKET_CDN=fluxer
           FLUXER_S3_BUCKET_UPLOADS=fluxer-uploads
-          FLUXER_S3_BUCKET_DOWNLOADS=fluxer-downloads
           FLUXER_S3_BUCKET_REPORTS=fluxer-reports
           FLUXER_S3_BUCKET_HARVESTS=fluxer-harvests
           AWS_ACCESS_KEY_ID=fluxer
@@ -240,6 +223,7 @@
           FLUXER_DISCOVERY_ENABLED=true
           FLUXER_SUDO_MODE_SECRET=${secret."fluxer/sudo_mode_secret"}
           FLUXER_CONNECTION_INITIATION_SECRET=${secret."fluxer/connection_initiation_secret"}
+          FLUXER_PROFILE_PSEUDONYM_SECRET=${secret."fluxer/profile_pseudonym_secret"}
           FLUXER_SSO_ALLOW_PRIVATE_ADDRESSES=false
           FLUXER_VAPID_PUBLIC_KEY=BLFtEENtXI2kDpLjP92GTmi8uSOJscnc13KBhdA2WtYFbXpK5kYuGEfskOzo9qRaVh5rTBLSWbE1svabHZC9Qds
           FLUXER_VAPID_PRIVATE_KEY=${secret."fluxer/vapid_private_key"}
@@ -270,7 +254,26 @@
           MEILI_MAX_INDEXING_MEMORY=384mb
           MEILI_MASTER_KEY=${secret."fluxer/meili_master_key"}
           LIVEKIT_KEYS=fluxer: ${secret."fluxer/livekit_api_secret"}
-          NODE_IP=${secret."fluxer/livekit_node_ip"}
+        '';
+      };
+      sops.templates."fluxer-livekit-yaml" = {
+        content = ''
+          port: 7880
+          log_level: info
+
+          rtc:
+            tcp_port: 7881
+            udp_port: 7882
+            node_ip: "${secret."fluxer/livekit_node_ip"}"
+            use_external_ip: false
+            stun_servers:
+              - stun.l.google.com:19302
+              - stun1.l.google.com:19302
+
+          webhook:
+            api_key: fluxer
+            urls:
+              - http://api:8080/webhooks/livekit
         '';
       };
       virtualisation.oci-containers.containers."fluxer-admin" = {
@@ -421,7 +424,7 @@
         ];
       };
       virtualisation.oci-containers.containers."fluxer-edge" = {
-        image = "caddy:2.10-alpine";
+        image = "docker.io/library/caddy:2.11-alpine";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
           FLUXER_EDGE_SITE_ADDRESS = ":80";
@@ -608,10 +611,10 @@
         ];
       };
       virtualisation.oci-containers.containers."fluxer-livekit" = {
-        image = "livekit/livekit-server:v1.12.0";
+        image = "docker.io/livekit/livekit-server:v1.12.0";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         volumes = [
-          "${livekitYaml}:/etc/livekit.yaml:ro"
+          "${config.sops.templates."fluxer-livekit-yaml".path}:/etc/livekit.yaml:ro"
         ];
         ports = [
           "7881:7881/tcp"
@@ -692,9 +695,51 @@
           "podman-compose-fluxer-root.target"
         ];
       };
-      virtualisation.oci-containers.containers."fluxer-meilisearch" = {
-        image = "getmeili/meilisearch:v1.12";
+      virtualisation.oci-containers.containers."fluxer-push" = {
+        image = "ghcr.io/fluxerapp/fluxer-push:v1";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
+        dependsOn = [
+          "fluxer-api"
+          "fluxer-nats"
+        ];
+        log-driver = "journald";
+        extraOptions = [
+          "--health-cmd=/usr/local/bin/fluxer-push healthcheck"
+          "--health-interval=10s"
+          "--health-timeout=5s"
+          "--health-retries=30"
+          "--health-start-period=60s"
+          "--network-alias=push"
+          "--network=fluxer_fluxer"
+        ];
+      };
+      systemd.services."podman-fluxer-push" = {
+        serviceConfig = {
+          Restart = lib.mkOverride 90 "always";
+          RestartMaxDelaySec = lib.mkOverride 90 "1m";
+          RestartSec = lib.mkOverride 90 "100ms";
+          RestartSteps = lib.mkOverride 90 9;
+        };
+        after = [
+          "podman-network-fluxer_fluxer.service"
+        ];
+        requires = [
+          "podman-network-fluxer_fluxer.service"
+        ];
+        partOf = [
+          "podman-compose-fluxer-root.target"
+        ];
+        wantedBy = [
+          "podman-compose-fluxer-root.target"
+        ];
+      };
+      virtualisation.oci-containers.containers."fluxer-meilisearch" = {
+        image = "docker.io/getmeili/meilisearch:v1.53";
+        environmentFiles = [ config.sops.templates."fluxer-env".path ];
+        environment = {
+          MEILI_UPGRADE_DB = "true";
+          MEILI_MAX_INDEXING_THREADS = "2";
+        };
         volumes = [
           "fluxer_meilisearch-data:/meili_data:rw"
         ];
@@ -736,6 +781,7 @@
         environment = {
           FLUXER_SVC_MODE = "router";
           FLUXER_SVC_MAX_CONCURRENT_REQUESTS = "";
+          FLUXER_SVC_NAME = "messages";
         };
         dependsOn = [
           "fluxer-nats"
@@ -778,6 +824,7 @@
           FLUXER_POSTGRES_MAX_CONNECTIONS = "20";
           FLUXER_SVC_MODE = "shard";
           FLUXER_SVC_MAX_CONCURRENT_REQUESTS = "";
+          FLUXER_SVC_NAME = "messages";
           FLUXER_SVC_SHARD_ID = "0";
         };
         dependsOn = [
@@ -816,7 +863,7 @@
         ];
       };
       virtualisation.oci-containers.containers."fluxer-nats" = {
-        image = "nats:2.14-alpine";
+        image = "docker.io/library/nats:2.14-alpine";
         volumes = [
           "fluxer_nats-data:/data:rw"
         ];
@@ -860,7 +907,7 @@
         ];
       };
       virtualisation.oci-containers.containers."fluxer-postgres" = {
-        image = "postgres:16-alpine";
+        image = "docker.io/library/postgres:16-alpine";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         volumes = [
           "fluxer_postgres-data:/var/lib/postgresql/data:rw"
@@ -898,7 +945,7 @@
           "--health-timeout=5s"
           "--network-alias=postgres"
           "--network=fluxer_fluxer"
-          "--shm-size=256mb"
+          "--shm-size=1gb"
         ];
       };
       systemd.services."podman-fluxer-postgres" = {
@@ -924,17 +971,19 @@
         ];
       };
       virtualisation.oci-containers.containers."fluxer-seaweedfs" = {
-        image = "chrislusf/seaweedfs:4.34";
+        image = "docker.io/chrislusf/seaweedfs:4.47";
         volumes = [
           "fluxer_seaweedfs-data:/data:rw"
         ];
         environment = {
           GOMEMLIMIT = "1536MiB";
+          WEED_MASTER_VOLUME_GROWTH_COPY_1 = "1";
         };
         cmd = [
           "server"
           "-s3"
           "-dir=/data"
+          "-master.telemetry=false"
         ];
         log-driver = "journald";
         extraOptions = [
@@ -970,7 +1019,7 @@
         ];
       };
       virtualisation.oci-containers.containers."fluxer-seaweedfs-init" = {
-        image = "chrislusf/seaweedfs:4.34";
+        image = "docker.io/chrislusf/seaweedfs:4.47";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         dependsOn = [
           "fluxer-seaweedfs"
@@ -1004,6 +1053,7 @@
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
           FLUXER_SVC_MODE = "router";
+          FLUXER_SVC_NAME = "snowflakes";
         };
         dependsOn = [
           "fluxer-nats"
@@ -1044,6 +1094,7 @@
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
           FLUXER_SVC_MODE = "shard";
+          FLUXER_SVC_NAME = "snowflakes";
           FLUXER_SVC_SHARD_ID = "0";
         };
         dependsOn = [
@@ -1119,6 +1170,7 @@
           FLUXER_MEDIA_PROXY_PUBLIC_ENDPOINT = "https://${domain}/media";
           FLUXER_STATIC_CDN_ENDPOINT = "https://${domain}";
           FLUXER_SVC_MODE = "router";
+          FLUXER_SVC_NAME = "unfurl";
         };
         dependsOn = [
           "fluxer-nats"
@@ -1161,7 +1213,9 @@
           FLUXER_MEDIA_PROXY_PUBLIC_ENDPOINT = "https://${domain}/media";
           FLUXER_STATIC_CDN_ENDPOINT = "https://${domain}";
           FLUXER_SVC_MODE = "shard";
+          FLUXER_SVC_NAME = "unfurl";
           FLUXER_SVC_SHARD_ID = "0";
+          FLUXER_MEDIA_PROXY_ENDPOINT = "http://media-proxy:8080";
         };
         dependsOn = [
           "fluxer-nats"
@@ -1203,6 +1257,7 @@
         environment = {
           FLUXER_SVC_MODE = "router";
           FLUXER_SVC_MAX_CONCURRENT_REQUESTS = "";
+          FLUXER_SVC_NAME = "users";
         };
         dependsOn = [
           "fluxer-nats"
@@ -1245,6 +1300,7 @@
           FLUXER_POSTGRES_MAX_CONNECTIONS = "20";
           FLUXER_SVC_MODE = "shard";
           FLUXER_SVC_MAX_CONCURRENT_REQUESTS = "";
+          FLUXER_SVC_NAME = "users";
           FLUXER_SVC_SHARD_ID = "0";
         };
         dependsOn = [
@@ -1283,7 +1339,7 @@
         ];
       };
       virtualisation.oci-containers.containers."fluxer-valkey" = {
-        image = "valkey/valkey:8.1-alpine";
+        image = "docker.io/valkey/valkey:9.1-alpine";
         volumes = [
           "fluxer_valkey-data:/data:rw"
         ];
@@ -1338,15 +1394,13 @@
         workdir = "/usr/src/app/fluxer_api";
         environment = {
           FLUXER_API_WORKER_ENABLE_CRON_SCHEDULER = "true";
-          FLUXER_API_WORKER_ENABLE_VOICE_RECONCILIATION = "true";
           FLUXER_API_WORKER_MODE = "all_lanes";
           FLUXER_POSTGRES_MAX_CONNECTIONS = "25";
           NODE_OPTIONS = "--enable-source-maps";
         };
         cmd = [
-          "sh"
-          "-c"
-          "if [ -f dist/WorkerEntrypoint.js ]; then exec node dist/WorkerEntrypoint.js; else exec ./node_modules/.bin/tsx src/WorkerEntrypoint.ts; fi"
+          "node"
+          "dist/WorkerEntrypoint.js"
         ];
         dependsOn = [
           "fluxer-messages-shard"
