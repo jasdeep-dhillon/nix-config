@@ -82,7 +82,7 @@
         inherit pkgs;
         settings = {
           audio = {
-            enable_overdrive = true;
+            enable_overdrive = false;
           };
           backdrop = {
             enabled = true;
@@ -223,10 +223,12 @@
             blur_intensity = 0.0;
           };
           notification = {
-            layer = "overlay";
+            layer = "top";
+            position = "bottom_right";
           };
           osd = {
             position = "bottom_center";
+            position_vertical = "center_right";
             kinds = {
               media = false;
             };
@@ -307,8 +309,8 @@
             # niri_overview_type_to_launch_enabled = true;
             password_style = "random";
             polkit_agent = true;
-            settings_show_advanced = true;
-            telemetry_enabled = true;
+            settings_show_advanced = false;
+            telemetry_enabled = false;
             panel = {
               clipboard_placement = "floating";
               clipboard_position = "auto";
@@ -316,7 +318,8 @@
               open_near_click_clipboard = true;
               open_near_click_control_center = true;
               launcher_placement = "floating";
-              open_near_click_launcher = true;
+              launcher_position = "auto";
+              open_near_click_launcher = false;
               transparency_mode = "soft";
               session_placement = "floating";
               session_position = "center";
@@ -331,6 +334,7 @@
             screen_time_enabled = true;
             launcher = {
               app_grid = true;
+              category_icons_only = true;
             };
             screenshot = {
               directory = "~/Pictures/Screenshots";
