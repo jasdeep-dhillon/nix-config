@@ -1,5 +1,5 @@
 { ... }:
 {
-  flake.wallpaper = ../wallpapers/94746825_p0.jpg;
+  flake.wallpaper = ../wallpapers/bg.png;
   flake.avatar = ../avatar.jpg;
 }
