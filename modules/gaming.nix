@@ -49,7 +49,7 @@
         dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
         localNetworkGameTransfers.openFirewall = true;
         gamescopeSession = {
-          enable = true;
+          enable = false;
           env = {
             ENABLE_GAMESCOPE_WSI = "1";
             DXVK_HDR = "1";
