@@ -37,9 +37,9 @@
           { app-id = "vesktop"; }
           { app-id = "discord"; }
           { app-id = "com.github.th-ch.youtube-music"; }
+          { app-id = "app.fluxer.Fluxer"; }
         ];
         open-on-workspace = "chat";
-        open-focused = false;
         open-maximized-to-edges = true;
       }
 
