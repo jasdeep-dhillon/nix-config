@@ -16,7 +16,7 @@
       dev
       packages
       programs
-      nixld
+      # nixld
 
       legion
       # legion-igpu
