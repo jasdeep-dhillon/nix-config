@@ -6,7 +6,7 @@
   flake.nixosModules.vcs =
     { pkgs, ... }:
     {
-      home-manager.users.arc = {
+      home-manager.users.${self.username} = {
         imports = [ self.homeModules.vcs ];
       };
       programs.git = {
@@ -39,7 +39,6 @@
           };
           user.signingkey = pubkey;
           gpg.format = "ssh";
-          lfs.enable = true;
           push = {
             default = "current";
             autoSetupRemote = true;
@@ -75,14 +74,6 @@
               "gh:"
               "https://github.com/"
             ];
-          };
-          filter = {
-            "lfs" = {
-              clean = "git-lfs clean -- %f";
-              smudge = "git-lfs smudge -- %f";
-              process = "git-lfs filter-process";
-              required = true;
-            };
           };
         };
       };

@@ -1,8 +1,5 @@
-{ self, inputs, ... }:
+{ inputs, ... }:
 {
-  flake.nixosModules.base = {
-    imports = [ self.nixosModules.run0 ];
-  };
   flake.nixosModules.run0 =
     { ... }:
     {

@@ -1,14 +1,25 @@
 { self, inputs, ... }:
 {
   flake.nixosModules.base = {
-    imports = [
+    imports = with self.nixosModules; [
+      tpm
+      boot
+      run0
+      sops
+      user
+      locale
+      services
+      settings
+      tailscale
+      lanzaboote
+      networking
       inputs.home-manager.nixosModules.default
     ];
     home-manager = {
       useUserPackages = true;
       backupFileExtension = "bak";
       overwriteBackup = true;
-      users.arc = {
+      users.${self.username} = {
         imports = [ self.homeModules.base ];
       };
     };
@@ -16,8 +27,8 @@
 
   flake.homeModules.base = {
     home = {
-      username = "arc";
-      homeDirectory = "/home/arc";
+      username = "${self.username}";
+      homeDirectory = "/home/${self.username}";
       stateVersion = "26.05";
       shell.enableNushellIntegration = true;
     };

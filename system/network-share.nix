@@ -1,6 +1,6 @@
-{ ... }:
+{ self, ... }:
 {
-  flake.nixosModules.lain = {
+  flake.nixosModules.lain = { lib, ... }: {
     services.samba = {
       enable = true;
       openFirewall = true;
@@ -13,15 +13,15 @@
         };
         "storage" = {
           "path" = "/media/Storage";
-          "valid users" = "arc";
-          "force user" = "arc";
+          "valid users" = "${self.username}";
+          "force user" = "${self.username}";
           "public" = "no";
           "writeable" = "yes";
         };
         "external" = {
           "path" = "/media/External";
-          "valid users" = "arc";
-          "force user" = "arc";
+          "valid users" = "${self.username}";
+          "force user" = "${self.username}";
           "public" = "no";
           "writeable" = "yes";
         };
@@ -33,6 +33,10 @@
       discovery = true;
     };
     services.avahi = {
+      publish = {
+        enable = lib.mkForce null;
+        userServices = lib.mkForce null;
+      };
       settings = {
         publish = {
           disable-publishing = false;
@@ -45,26 +49,34 @@
   };
 
   flake.nixosModules.legion =
-    { pkgs, ... }:
+    { pkgs, config, ... }:
+    let
+      automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=120,x-systemd.device-timeout=5s,x-systemd.mount-timeout=15s";
+      uid = config.users.users.${self.username}.uid;
+    in
     {
+      sops.secrets."password/smb" = { };
+      sops.templates."smb-credentials" = {
+        mode = "0400";
+        content = ''
+          username=${self.username}
+          password=${config.sops.placeholder."password/smb"}
+        '';
+      };
       environment.systemPackages = [ pkgs.cifs-utils ];
       fileSystems."/media/lain/Storage" = {
         device = "//lain/storage";
         fsType = "cifs";
-        options =
-          let
-            automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
-          in
-          [ "${automount_opts},uid=1000,credentials=/etc/nixos/smb-secrets" ];
+        options = [
+          "${automount_opts},uid=${toString uid},credentials=${config.sops.templates."smb-credentials".path}"
+        ];
       };
       fileSystems."/media/lain/External" = {
         device = "//lain/external";
         fsType = "cifs";
-        options =
-          let
-            automount_opts = "x-systemd.automount,noauto,x-systemd.idle-timeout=60,x-systemd.device-timeout=5s,x-systemd.mount-timeout=5s";
-          in
-          [ "${automount_opts},uid=1000,credentials=/etc/nixos/smb-secrets" ];
+        options = [
+          "${automount_opts},uid=${toString uid},credentials=${config.sops.templates."smb-credentials".path}"
+        ];
       };
     };
 }

@@ -8,10 +8,11 @@
       podman-desktop
       distrobox
       distrobox-tui
+      podman-compose
     ];
   };
   flake.nixosModules.containers =
-    { pkgs, ... }:
+    { ... }:
     {
       # Enable Containers using Podman
       virtualisation = {
@@ -27,8 +28,5 @@
           };
         };
       };
-      environment.systemPackages = with pkgs; [
-        podman-compose
-      ];
     };
 }

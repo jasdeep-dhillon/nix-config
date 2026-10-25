@@ -17,7 +17,7 @@
         dontUnpack = true;
         installPhase = ''
           mkdir -p $out/share/sddm/faces
-          cp $src $out/share/sddm/faces/arc.face.icon
+          cp $src $out/share/sddm/faces/${self.username}.face.icon
         '';
       };
     in

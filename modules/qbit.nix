@@ -35,14 +35,9 @@
       systemd.services.qbittorrent.serviceConfig = {
         ExecStartPre = [
           ''
-            ${pkgs.bash}/bin/sh -c '${pkgs.coreutils}/bin/echo "WebUI\Password_PBKDF2=$(${pkgs.coreutils}/bin/cat /run/secrets/password/qbit)" >> ${config.services.qbittorrent.profileDir}/qBittorrent/config/qBittorrent.conf'
+            ${pkgs.bash}/bin/sh -c 'conf="${config.services.qbittorrent.profileDir}/qBittorrent/config/qBittorrent.conf"; pw="$(${pkgs.coreutils}/bin/cat /run/secrets/password/qbit)"; ${pkgs.gnused}/bin/sed -i "/WebUI\\\\Password_PBKDF2=/d" "$conf"; ${pkgs.coreutils}/bin/echo "WebUI\Password_PBKDF2=$pw" >> "$conf"'
           ''
         ];
       };
-      # systemd.services.cloudflare-warp.serviceConfig = {
-      #   After = [ "tailscaled.service" ];
-      # };
-      # services.cloudflare-warp.enable = false;
-      environment.systemPackages = [ pkgs.cloudflare-warp ];
     };
 }

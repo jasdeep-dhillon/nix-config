@@ -1,7 +1,7 @@
 { ... }:
 {
   flake.nixosModules.dev = {
-    # home-manager.users.arc = {
+    # home-manager.users.${self.username} = {
     #   imports = [ self.homeModules.toolchain ];
     # };
     networking.firewall = {

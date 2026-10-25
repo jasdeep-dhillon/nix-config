@@ -1,8 +1,5 @@
 { self, ... }:
 {
-  flake.nixosModules.base = {
-    imports = [ self.nixosModules.iso ];
-  };
   flake.nixosModules.iso =
     { lib, modulesPath, ... }:
     {
@@ -14,7 +11,7 @@
 
             boot.supportedFilesystems.zfs = lib.mkImageMediaOverride false;
 
-            users.users.arc.initialPassword = "";
+            users.users.${self.username}.initialPassword = "";
 
             boot.lanzaboote.enable = lib.mkImageMediaOverride false;
             nixpkgs.config.cudaSupport = lib.mkImageMediaOverride false;

@@ -13,8 +13,6 @@
           extraPackages = with pkgs; [
             libvdpau
             vulkan-loader
-            vulkan-headers
-            vulkan-validation-layers
           ];
           extraPackages32 = with pkgs.pkgsi686Linux; [
             mesa

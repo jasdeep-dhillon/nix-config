@@ -3,7 +3,7 @@
   flake.nixosModules.dev =
     { pkgs, ... }:
     {
-      home-manager.users.arc = {
+      home-manager.users.${self.username} = {
         imports = [ self.homeModules.tools ];
       };
       environment.systemPackages = with pkgs; [

@@ -1,13 +1,10 @@
-{ self, inputs, ... }:
+{ inputs, ... }:
 {
-  flake.nixosModules.base = {
-    imports = [ self.nixosModules.lanzaboote ];
-  };
   flake.nixosModules.lanzaboote =
-    { lib, ... }:
+    { lib, config, ... }:
     {
       imports = [ inputs.lanzaboote.nixosModules.lanzaboote ];
-      boot.loader.systemd-boot.enable = lib.mkForce false;
+      boot.loader.systemd-boot.enable = lib.mkIf config.boot.lanzaboote.enable (lib.mkForce false);
 
       boot.lanzaboote = {
         enable = true;

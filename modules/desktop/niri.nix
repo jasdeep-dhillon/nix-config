@@ -11,7 +11,6 @@
       environment.systemPackages = with pkgs; [
         seahorse
       ];
-      security.pam.services.hyprlock = { };
       services.gnome.gnome-keyring.enable = true;
       services.displayManager.defaultSession = "niri";
       services.logind.settings.Login = {

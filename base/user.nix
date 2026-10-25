@@ -1,15 +1,12 @@
 { self, ... }:
 {
-  flake.nixosModules.base = {
-    imports = [ self.nixosModules.user ];
-  };
   flake.nixosModules.user =
     { pkgs, ... }:
     {
-      users.users.arc = {
-        name = "arc";
+      users.users.${self.username} = {
+        name = "${self.username}";
         isNormalUser = true;
-        description = "Arc";
+        description = "${self.username}";
         extraGroups = [
           "networkmanager"
           "wheel"

@@ -15,7 +15,7 @@
         scheduler
         jellyfin-client
         input-share
-        guiPrograms
+        gui-programs
       ];
       systemd.user.services.tailscale-systray = {
         enable = true;
@@ -49,7 +49,7 @@
       # auto mount service
       services.gvfs.enable = true;
       services.udev.packages = [ pkgs.libmtp ];
-      home-manager.users.arc = {
+      home-manager.users.${self.username} = {
         imports = [ self.homeModules.desktop ];
       };
     };

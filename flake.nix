@@ -20,10 +20,8 @@
     ];
     http-connections = 50;
     show-trace = true;
-    use-cgroups = true;
     use-xdg-base-directories = true;
     warn-dirty = false;
-    allow-unfree = true;
   };
 
   inputs = {
@@ -54,7 +52,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
       inputs.home-manager.follows = "home-manager";
     };
-    # autolith.url = "github:lambda-symbolics/autolith";
     blip = {
       url = "github:blip-net/nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -62,10 +59,6 @@
     mitos = {
       url = "github:mitos-editor/mitos";
     };
-    # vibepanel = {
-    #   url = "github:prankstr/vibepanel";
-    #   inputs.nixpkgs.follows = "nixpkgs";
-    # };
   };
 
   outputs =

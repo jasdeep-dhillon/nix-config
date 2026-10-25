@@ -3,7 +3,7 @@
   flake.nixosModules.programs =
     { pkgs, ... }:
     {
-      home-manager.users.arc = {
+      home-manager.users.${self.username} = {
         imports = [ self.homeModules.programs ];
       };
       security.polkit.enable = true;
@@ -25,12 +25,12 @@
       environment.shells = [ pkgs.nushell ];
     };
 
-  flake.nixosModules.guiPrograms =
+  flake.nixosModules.gui-programs =
     { pkgs, config, ... }:
     {
-      home-manager.users.arc = {
+      home-manager.users.${self.username} = {
         imports = [
-          self.homeModules.guiPrograms
+          self.homeModules.gui-programs
           inputs.blip.homeModules.default
         ];
       };
@@ -53,7 +53,7 @@
       };
     };
 
-  flake.homeModules.guiPrograms =
+  flake.homeModules.gui-programs =
     { pkgs, lib, ... }:
     {
       programs.kitty = {

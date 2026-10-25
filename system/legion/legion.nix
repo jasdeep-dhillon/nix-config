@@ -21,6 +21,7 @@
       legion
       # legion-igpu
       {
+        networking.hostName = "legion";
         hardware = {
           nvidia = {
             dynamicBoost.enable = true;

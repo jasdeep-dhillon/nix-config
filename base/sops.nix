@@ -1,8 +1,5 @@
 { self, inputs, ... }:
 {
-  flake.nixosModules.base = {
-    imports = [ self.nixosModules.sops ];
-  };
   flake.nixosModules.sops =
     { pkgs, config, ... }:
     let
@@ -11,20 +8,17 @@
     {
       imports = [ inputs.sops-nix.nixosModules.sops ];
       environment.systemPackages = with pkgs; [ sops ];
-      environment.sessionVariables = {
-        SOPS_AGE_KEY_FILE = keyFile;
-      };
       sops = {
         defaultSopsFile = ../secrets.yaml;
         defaultSopsFormat = "yaml";
         age.keyFile = keyFile;
         secrets."private_keys/ssh" = {
-          path = "/home/arc/.ssh/id_ed25519";
-          owner = config.users.users.arc.name;
+          path = "${config.users.users.${self.username}.home}/.ssh/id_ed25519";
+          owner = config.users.users.${self.username}.name;
           mode = "0600";
         };
         secrets."private_keys/tailscale" = {
-          owner = config.users.users.arc.name;
+          owner = config.users.users.${self.username}.name;
         };
       };
     };

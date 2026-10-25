@@ -1,8 +1,5 @@
-{ self, ... }:
+{ ... }:
 {
-  flake.nixosModules.base = {
-    imports = [ self.nixosModules.boot ];
-  };
   flake.nixosModules.boot =
     { pkgs, lib, ... }:
     {
@@ -29,7 +26,6 @@
           "rd.systemd.show_status=auto"
           "plymouth.use-simpledrm=0"
         ];
-        kernelModules = lib.mkAfter [ "ntsync" ];
         supportedFilesystems = {
           btrfs = true;
           ntfs = true;

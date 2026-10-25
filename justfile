@@ -60,7 +60,7 @@ trace-switch-lain:
 test-legion:
     nh os test . -H legion --accept-flake-config
 
-# Test legion configuration
+# Test lain configuration
 test-lain:
     nh os test . -H lain --accept-flake-config
 
@@ -72,11 +72,6 @@ clean:
 sddm:
     sddm-greeter-qt6 --test-mode --theme /run/current-system/sw/share/sddm/themes/breeze/
 
-# Copy keys to sops config directory
-keys:
-    sudo mkdir -p /persist/sops
-    sudo cp keys.txt /persist/sops
-
 # Optimise nix store
 optimise:
     nix store optimise
@@ -86,5 +81,5 @@ build-legion:
     nh os build-image . -H legion --image-variant iso-installer --accept-flake-config
 
 # Build Host iso
-build: 
+build:
     nh os build-image . --image-variant iso-installer --accept-flake-config

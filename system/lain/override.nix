@@ -1,4 +1,4 @@
-{ ... }:
+{ self, ... }:
 {
   flake.nixosModules.lain =
     {
@@ -10,7 +10,7 @@
 
     {
       environment.systemPackages = with pkgs; [
-        helix
+        self.packages.${pkgs.stdenv.hostPlatform.system}.mitos
         just
         devenv
       ];

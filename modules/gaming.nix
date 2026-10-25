@@ -1,4 +1,4 @@
-{ ... }:
+{ self, ... }:
 {
   flake.nixosModules.gaming =
     {
@@ -21,6 +21,7 @@
           "kernel.sched_cfs_bandwidth_slice_us" = 3000;
         };
         kernelParams = [ "transparent_hugepage=always" ];
+        kernelModules = lib.mkAfter [ "ntsync" ];
       };
 
       programs.steam = {
@@ -66,11 +67,6 @@
           "--adaptive-sync"
           "--expose-wayland"
         ];
-        env = lib.optionalAttrs config.hardware.nvidia.enabled {
-          __NV_PRIME_RENDER_OFFLOAD = "1";
-          __VK_LAYER_NV_optimus = "NVIDIA_only";
-          __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-        };
       };
       programs.gamemode = {
         enable = true;
@@ -86,7 +82,7 @@
           };
         };
       };
-      users.groups.gamemode.members = [ "arc" ];
+      users.groups.gamemode.members = [ "${self.username}" ];
       environment.systemPackages = with pkgs; [
         mangohud
         sgdboop
@@ -104,7 +100,6 @@
       ];
       environment.sessionVariables = {
         STEAM_EXTRA_COMPAT_TOOLS_PATHS = "\${HOME}/.steam/root/compatibilitytools.d";
-        STEAM_EXTRA_COMPAT_TOOLS_PATH = "\${HOME}/.steam/root/compatibilitytools.d";
         PROTON_ENABLE_WAYLAND = "1";
         PROTON_ENABLE_NTSYNC = "1";
         MESA_SHADER_CACHE_MAX_SIZE = "16G";

@@ -10,7 +10,7 @@
     let
       caddyWithPlugin = pkgs.caddy.withPlugins {
         plugins = [ "github.com/tailscale/caddy-tailscale@v0.0.0-20260106222316-bb080c4414ac" ];
-          hash = "sha256-uZzS2DTcWan8E1NxQbI0sARNT7afpOrReUQmXi3c6Co=";
+          hash = "sha256-dhw1ZS/SW7XeZHw4H7xgqGaZofsw6bEIxZE2fl6e9D0=";
       };
       caddyImage = pkgs.dockerTools.buildImage {
         name = "caddy-tailscale";
@@ -64,7 +64,6 @@
       networking.networkmanager.enable = true;
       networking.hostName = "lain";
       networking.firewall = {
-        enable = true;
         allowedTCPPorts = [
           443
           7881
@@ -80,7 +79,6 @@
         owner = "root";
       };
 
-      virtualisation.podman.enable = true;
       virtualisation.oci-containers.containers.caddy = {
         image = "caddy-tailscale:latest";
         volumes = [

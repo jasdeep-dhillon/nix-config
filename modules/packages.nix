@@ -19,7 +19,7 @@
         nix-tree
         nix-output-monitor
       ];
-      home-manager.users.arc = {
+      home-manager.users.${self.username} = {
         imports = [ self.homeModules.packages ];
       };
     };

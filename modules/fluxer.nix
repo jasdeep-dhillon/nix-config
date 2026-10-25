@@ -118,13 +118,121 @@
           exit 1;
         ''
       ];
+      # ---- Generated systemd wiring ----
+      netSvc = "podman-network-fluxer_fluxer.service";
+
+      # Every container's systemd unit is identical: a restart policy
+      # composition2nix set plus a hard dep on the shared compose network
+      # and on each named volume the container binds (if any).
+      # NOTE: both generators return { "<unit-name>" = { ... }; } attrsets,
+      # which the caller merges into `systemd.services` (do NOT wrap them
+      # again in systemd.services here).
+      podmanService =
+        name:
+        {
+          volumes ? [ ],
+          restart ? "always",
+        }:
+        let
+          volUnits = map (v: "podman-volume-${v}.service") volumes;
+        in
+        {
+          "podman-${name}" = {
+            serviceConfig =
+              {
+                Restart = lib.mkOverride 90 restart;
+              }
+              // lib.optionalAttrs (restart != "no") {
+                RestartMaxDelaySec = lib.mkOverride 90 "1m";
+                RestartSec = lib.mkOverride 90 "100ms";
+                RestartSteps = lib.mkOverride 90 9;
+              };
+            after = [ netSvc ] ++ volUnits;
+            requires = [ netSvc ] ++ volUnits;
+            partOf = [ "podman-compose-fluxer-root.target" ];
+            wantedBy = [ "podman-compose-fluxer-root.target" ];
+          };
+        };
+
+      # `podman volume create` oneshot for a named compose volume.
+      volumeService =
+        name:
+        {
+          "podman-volume-${name}" = {
+            path = [ pkgs.podman ];
+            serviceConfig = {
+              Type = "oneshot";
+              RemainAfterExit = true;
+            };
+            script = ''
+              podman volume inspect ${name} || podman volume create ${name}
+            '';
+            partOf = [ "podman-compose-fluxer-root.target" ];
+            wantedBy = [ "podman-compose-fluxer-root.target" ];
+          };
+        };
+
+      # Named volumes the compose project uses.
+      fluxerVolumes = [
+        "fluxer_edge-config"
+        "fluxer_edge-data"
+        "fluxer_meilisearch-data"
+        "fluxer_nats-data"
+        "fluxer_postgres-data"
+        "fluxer_seaweedfs-data"
+        "fluxer_valkey-data"
+      ];
+
+      # Per-container wiring: which named volumes it binds, and any
+      # overrides. seaweedfs-init is a one-shot bootstrap job, so it
+      # must not restart.
+      serviceWiring = {
+        "fluxer-admin" = { };
+        "fluxer-api" = { };
+        "fluxer-app-proxy" = { };
+        "fluxer-edge" = {
+          volumes = [
+            "fluxer_edge-config"
+            "fluxer_edge-data"
+          ];
+        };
+        "fluxer-gateway" = { };
+        "fluxer-gifs" = { };
+        "fluxer-gifs-shard" = { };
+        "fluxer-livekit" = { };
+        "fluxer-media-proxy" = { };
+        "fluxer-push" = { };
+        "fluxer-meilisearch" = {
+          volumes = [ "fluxer_meilisearch-data" ];
+        };
+        "fluxer-messages" = { };
+        "fluxer-messages-shard" = { };
+        "fluxer-nats" = {
+          volumes = [ "fluxer_nats-data" ];
+        };
+        "fluxer-postgres" = {
+          volumes = [ "fluxer_postgres-data" ];
+        };
+        "fluxer-seaweedfs" = {
+          volumes = [ "fluxer_seaweedfs-data" ];
+        };
+        "fluxer-seaweedfs-init" = {
+          restart = "no";
+        };
+        "fluxer-snowflakes" = { };
+        "fluxer-snowflakes-shard" = { };
+        "fluxer-static-proxy" = { };
+        "fluxer-unfurl" = { };
+        "fluxer-unfurl-shard" = { };
+        "fluxer-users" = { };
+        "fluxer-users-shard" = { };
+        "fluxer-valkey" = {
+          volumes = [ "fluxer_valkey-data" ];
+        };
+        "fluxer-worker" = { };
+      };
     in
     {
-      virtualisation.podman = {
-        enable = true;
-        autoPrune.enable = true;
-        dockerCompat = true;
-      };
       networking.firewall.interfaces =
         let
           matchAll = if !config.networking.nftables.enable then "podman+" else "podman*";
@@ -303,28 +411,7 @@
           "--network-alias=admin"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-admin" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-api" = {
+      };      virtualisation.oci-containers.containers."fluxer-api" = {
         image = "ghcr.io/fluxerapp/fluxer-api:v1";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
@@ -358,28 +445,7 @@
           "--network-alias=api"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-api" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-app-proxy" = {
+      };      virtualisation.oci-containers.containers."fluxer-app-proxy" = {
         image = "ghcr.io/fluxerapp/fluxer-app-proxy-self-hosted:v1";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
@@ -402,28 +468,7 @@
           "--network-alias=app-proxy"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-app-proxy" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-edge" = {
+      };      virtualisation.oci-containers.containers."fluxer-edge" = {
         image = "docker.io/library/caddy:2.11-alpine";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
@@ -454,32 +499,7 @@
           "--network-alias=edge"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-edge" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-          "podman-volume-fluxer_edge-config.service"
-          "podman-volume-fluxer_edge-data.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-          "podman-volume-fluxer_edge-config.service"
-          "podman-volume-fluxer_edge-data.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-gateway" = {
+      };      virtualisation.oci-containers.containers."fluxer-gateway" = {
         image = "ghcr.io/fluxerapp/fluxer-gateway:v1";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
@@ -504,28 +524,7 @@
           "--network-alias=gateway"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-gateway" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-gifs" = {
+      };      virtualisation.oci-containers.containers."fluxer-gifs" = {
         image = "ghcr.io/fluxerapp/fluxer-gifs:v1";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
@@ -546,28 +545,7 @@
           "--network-alias=gifs"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-gifs" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-gifs-shard" = {
+      };      virtualisation.oci-containers.containers."fluxer-gifs-shard" = {
         image = "ghcr.io/fluxerapp/fluxer-gifs:v1";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
@@ -589,28 +567,7 @@
           "--network-alias=gifs-shard"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-gifs-shard" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-livekit" = {
+      };      virtualisation.oci-containers.containers."fluxer-livekit" = {
         image = "docker.io/livekit/livekit-server:v1.12.0";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         volumes = [
@@ -633,28 +590,7 @@
           "--network-alias=livekit"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-livekit" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-media-proxy" = {
+      };      virtualisation.oci-containers.containers."fluxer-media-proxy" = {
         image = "ghcr.io/fluxerapp/fluxer-media-proxy:v1";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
@@ -674,28 +610,7 @@
           "--network-alias=media-proxy"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-media-proxy" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-push" = {
+      };      virtualisation.oci-containers.containers."fluxer-push" = {
         image = "ghcr.io/fluxerapp/fluxer-push:v1";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         dependsOn = [
@@ -712,28 +627,7 @@
           "--network-alias=push"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-push" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-meilisearch" = {
+      };      virtualisation.oci-containers.containers."fluxer-meilisearch" = {
         image = "docker.io/getmeili/meilisearch:v1.53";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
@@ -752,30 +646,7 @@
           "--network-alias=meilisearch"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-meilisearch" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-          "podman-volume-fluxer_meilisearch-data.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-          "podman-volume-fluxer_meilisearch-data.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-messages" = {
+      };      virtualisation.oci-containers.containers."fluxer-messages" = {
         image = "ghcr.io/fluxerapp/fluxer-messages:v1";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
@@ -796,28 +667,7 @@
           "--network-alias=messages"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-messages" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-messages-shard" = {
+      };      virtualisation.oci-containers.containers."fluxer-messages-shard" = {
         image = "ghcr.io/fluxerapp/fluxer-messages:v1";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
@@ -841,28 +691,7 @@
           "--network-alias=messages-shard"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-messages-shard" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-nats" = {
+      };      virtualisation.oci-containers.containers."fluxer-nats" = {
         image = "docker.io/library/nats:2.14-alpine";
         volumes = [
           "fluxer_nats-data:/data:rw"
@@ -883,30 +712,7 @@
           "--network-alias=nats"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-nats" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-          "podman-volume-fluxer_nats-data.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-          "podman-volume-fluxer_nats-data.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-postgres" = {
+      };      virtualisation.oci-containers.containers."fluxer-postgres" = {
         image = "docker.io/library/postgres:16-alpine";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         volumes = [
@@ -947,30 +753,7 @@
           "--network=fluxer_fluxer"
           "--shm-size=1gb"
         ];
-      };
-      systemd.services."podman-fluxer-postgres" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-          "podman-volume-fluxer_postgres-data.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-          "podman-volume-fluxer_postgres-data.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-seaweedfs" = {
+      };      virtualisation.oci-containers.containers."fluxer-seaweedfs" = {
         image = "docker.io/chrislusf/seaweedfs:4.47";
         volumes = [
           "fluxer_seaweedfs-data:/data:rw"
@@ -995,30 +778,7 @@
           "--network-alias=seaweedfs"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-seaweedfs" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-          "podman-volume-fluxer_seaweedfs-data.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-          "podman-volume-fluxer_seaweedfs-data.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-seaweedfs-init" = {
+      };      virtualisation.oci-containers.containers."fluxer-seaweedfs-init" = {
         image = "docker.io/chrislusf/seaweedfs:4.47";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         dependsOn = [
@@ -1030,25 +790,7 @@
           "--network-alias=seaweedfs-init"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-seaweedfs-init" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "no";
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-snowflakes" = {
+      };      virtualisation.oci-containers.containers."fluxer-snowflakes" = {
         image = "ghcr.io/fluxerapp/fluxer-snowflakes:v1";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
@@ -1068,28 +810,7 @@
           "--network-alias=snowflakes"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-snowflakes" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-snowflakes-shard" = {
+      };      virtualisation.oci-containers.containers."fluxer-snowflakes-shard" = {
         image = "ghcr.io/fluxerapp/fluxer-snowflakes:v1";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
@@ -1110,28 +831,7 @@
           "--network-alias=snowflakes-shard"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-snowflakes-shard" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-static-proxy" = {
+      };      virtualisation.oci-containers.containers."fluxer-static-proxy" = {
         image = "ghcr.io/fluxerapp/fluxer-static:v1";
         log-driver = "journald";
         extraOptions = [
@@ -1142,28 +842,7 @@
           "--network-alias=static-proxy"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-static-proxy" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-unfurl" = {
+      };      virtualisation.oci-containers.containers."fluxer-unfurl" = {
         image = "ghcr.io/fluxerapp/fluxer-unfurl:v1";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
@@ -1185,28 +864,7 @@
           "--network-alias=unfurl"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-unfurl" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-unfurl-shard" = {
+      };      virtualisation.oci-containers.containers."fluxer-unfurl-shard" = {
         image = "ghcr.io/fluxerapp/fluxer-unfurl:v1";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
@@ -1230,28 +888,7 @@
           "--network-alias=unfurl-shard"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-unfurl-shard" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-users" = {
+      };      virtualisation.oci-containers.containers."fluxer-users" = {
         image = "ghcr.io/fluxerapp/fluxer-users:v1";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
@@ -1272,28 +909,7 @@
           "--network-alias=users"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-users" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-users-shard" = {
+      };      virtualisation.oci-containers.containers."fluxer-users-shard" = {
         image = "ghcr.io/fluxerapp/fluxer-users:v1";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         environment = {
@@ -1317,28 +933,7 @@
           "--network-alias=users-shard"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-users-shard" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-valkey" = {
+      };      virtualisation.oci-containers.containers."fluxer-valkey" = {
         image = "docker.io/valkey/valkey:9.1-alpine";
         volumes = [
           "fluxer_valkey-data:/data:rw"
@@ -1365,30 +960,7 @@
           "--network-alias=valkey"
           "--network=fluxer_fluxer"
         ];
-      };
-      systemd.services."podman-fluxer-valkey" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-          "podman-volume-fluxer_valkey-data.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-          "podman-volume-fluxer_valkey-data.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-      virtualisation.oci-containers.containers."fluxer-worker" = {
+      };      virtualisation.oci-containers.containers."fluxer-worker" = {
         image = "ghcr.io/fluxerapp/fluxer-api:v1";
         environmentFiles = [ config.sops.templates."fluxer-env".path ];
         workdir = "/usr/src/app/fluxer_api";
@@ -1422,127 +994,35 @@
           "--network=fluxer_fluxer"
         ];
       };
-      systemd.services."podman-fluxer-worker" = {
-        serviceConfig = {
-          Restart = lib.mkOverride 90 "always";
-          RestartMaxDelaySec = lib.mkOverride 90 "1m";
-          RestartSec = lib.mkOverride 90 "100ms";
-          RestartSteps = lib.mkOverride 90 9;
-        };
-        after = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        requires = [
-          "podman-network-fluxer_fluxer.service"
-        ];
-        partOf = [
-          "podman-compose-fluxer-root.target"
-        ];
-        wantedBy = [
-          "podman-compose-fluxer-root.target"
-        ];
-      };
-
-      # Networks
-      systemd.services."podman-network-fluxer_fluxer" = {
-        path = [ pkgs.podman ];
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-          ExecStop = "podman network rm -f fluxer_fluxer";
-        };
-        script = ''
+      # Networks + volumes + per-container units.
+      # The network oneshot is special-cased (it owns the ExecStop teardown);
+      # containers use identical wiring to the compose network plus any named
+      # volumes they bind, so they are generated from the wiring table.
+      systemd.services =
+        let
+          network =
+            {
+              "podman-network-fluxer_fluxer" = {
+                path = [ pkgs.podman ];
+                serviceConfig = {
+                  Type = "oneshot";
+                  RemainAfterExit = true;
+                  ExecStop = "podman network rm -f fluxer_fluxer";
+                };
+                script = ''
           podman network inspect fluxer_fluxer || podman network create fluxer_fluxer --driver=bridge
         '';
-        partOf = [ "podman-compose-fluxer-root.target" ];
-        wantedBy = [ "podman-compose-fluxer-root.target" ];
-      };
-
-      # Volumes
-      systemd.services."podman-volume-fluxer_edge-config" = {
-        path = [ pkgs.podman ];
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-        };
-        script = ''
-          podman volume inspect fluxer_edge-config || podman volume create fluxer_edge-config
-        '';
-        partOf = [ "podman-compose-fluxer-root.target" ];
-        wantedBy = [ "podman-compose-fluxer-root.target" ];
-      };
-      systemd.services."podman-volume-fluxer_edge-data" = {
-        path = [ pkgs.podman ];
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-        };
-        script = ''
-          podman volume inspect fluxer_edge-data || podman volume create fluxer_edge-data
-        '';
-        partOf = [ "podman-compose-fluxer-root.target" ];
-        wantedBy = [ "podman-compose-fluxer-root.target" ];
-      };
-      systemd.services."podman-volume-fluxer_meilisearch-data" = {
-        path = [ pkgs.podman ];
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-        };
-        script = ''
-          podman volume inspect fluxer_meilisearch-data || podman volume create fluxer_meilisearch-data
-        '';
-        partOf = [ "podman-compose-fluxer-root.target" ];
-        wantedBy = [ "podman-compose-fluxer-root.target" ];
-      };
-      systemd.services."podman-volume-fluxer_nats-data" = {
-        path = [ pkgs.podman ];
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-        };
-        script = ''
-          podman volume inspect fluxer_nats-data || podman volume create fluxer_nats-data
-        '';
-        partOf = [ "podman-compose-fluxer-root.target" ];
-        wantedBy = [ "podman-compose-fluxer-root.target" ];
-      };
-      systemd.services."podman-volume-fluxer_postgres-data" = {
-        path = [ pkgs.podman ];
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-        };
-        script = ''
-          podman volume inspect fluxer_postgres-data || podman volume create fluxer_postgres-data
-        '';
-        partOf = [ "podman-compose-fluxer-root.target" ];
-        wantedBy = [ "podman-compose-fluxer-root.target" ];
-      };
-      systemd.services."podman-volume-fluxer_seaweedfs-data" = {
-        path = [ pkgs.podman ];
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-        };
-        script = ''
-          podman volume inspect fluxer_seaweedfs-data || podman volume create fluxer_seaweedfs-data
-        '';
-        partOf = [ "podman-compose-fluxer-root.target" ];
-        wantedBy = [ "podman-compose-fluxer-root.target" ];
-      };
-      systemd.services."podman-volume-fluxer_valkey-data" = {
-        path = [ pkgs.podman ];
-        serviceConfig = {
-          Type = "oneshot";
-          RemainAfterExit = true;
-        };
-        script = ''
-          podman volume inspect fluxer_valkey-data || podman volume create fluxer_valkey-data
-        '';
-        partOf = [ "podman-compose-fluxer-root.target" ];
-        wantedBy = [ "podman-compose-fluxer-root.target" ];
-      };
+                partOf = [ "podman-compose-fluxer-root.target" ];
+                wantedBy = [ "podman-compose-fluxer-root.target" ];
+              };
+            };
+        in
+        builtins.foldl' lib.recursiveUpdate network (
+          map volumeService fluxerVolumes
+          ++ map (name: podmanService name serviceWiring.${name}) (
+            builtins.attrNames serviceWiring
+          )
+        );
 
       # Root service
       # When started, this will automatically create all resources and start

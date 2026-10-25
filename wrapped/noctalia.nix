@@ -350,7 +350,7 @@
             custom_palette = "custom";
           };
           wallpaper = {
-            directory = "/home/arc/Pictures/Wallpapers";
+            directory = "/home/${self.username}/Pictures/Wallpapers";
             default = {
               path = self.wallpaper;
             };
