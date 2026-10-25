@@ -21,7 +21,6 @@
         # Silent Boot
         consoleLogLevel = 3;
         loader.timeout = lib.mkDefault 0;
-        initrd.verbose = false;
         kernelParams = [
           "quiet"
           "splash"
