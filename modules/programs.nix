@@ -190,7 +190,7 @@
         settings = {
           logo = {
             type = "auto";
-            source = "~/.config/fastfetch/nekoarc.png";
+            source = "${config.xdg.configHome}/fastfetch/nekoarc.png";
             width = 35;
             height = 20;
           };
@@ -463,7 +463,7 @@
         extraConfig =
           # Carapace
           ''
-            $env.PATH = ($env.PATH | split row (char esep) | where { $in != "${config.home.homeDirectory}/.config/carapace/bin" } | prepend "${config.home.homeDirectory}/.config/carapace/bin")
+            $env.PATH = ($env.PATH | split row (char esep) | where { $in != "${config.xdg.configHome}/carapace/bin" } | prepend "${config.xdg.configHome}/carapace/bin")
 
             def --env get-env [name] { $env | get $name }
             def --env set-env [name, value] { load-env { $name: $value } }

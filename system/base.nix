@@ -10,6 +10,7 @@
       locale
       services
       settings
+      xdg
       tailscale
       lanzaboote
       networking
@@ -26,6 +27,7 @@
   };
 
   flake.homeModules.base = {
+    imports = [ self.homeModules.xdg ];
     home = {
       username = "${self.username}";
       homeDirectory = "/home/${self.username}";
