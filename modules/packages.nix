@@ -47,7 +47,6 @@
           })
           loupe
           unrar
-          onlyoffice-desktopeditors
           pear-desktop
           easyeffects
           pinta
