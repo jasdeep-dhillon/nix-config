@@ -5,6 +5,7 @@
     {
       users.users.${self.username} = {
         name = "${self.username}";
+        uid = 1000;
         isNormalUser = true;
         description = "${self.username}";
         extraGroups = [
