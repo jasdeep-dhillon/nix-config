@@ -46,7 +46,7 @@
           '';
         };
         colors = lib.mkOption {
-          type = wlib.types.structuredValueWith { typeName = "TOML"; };
+          type = wlib.types.structuredValueWith { typeName = "JSON"; };
           default = { };
           description = ''
             Noctalia shell color configuration as an attribute set
