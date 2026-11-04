@@ -22,21 +22,6 @@
         enable = true;
         package = self.packages.${pkgs.stdenv.hostPlatform.system}.niri;
       };
-      xdg.portal = {
-        enable = true;
-        xdgOpenUsePortal = true;
-        extraPortals = with pkgs; [
-          xdg-desktop-portal-gnome
-          xdg-desktop-portal-gtk
-        ];
-        config.niri = {
-          default = [ "gnome" "gtk" ];
-          "org.freedesktop.impl.portal.Access" = "gtk";
-          "org.freedesktop.impl.portal.FileChooser" = "gtk";
-          "org.freedesktop.impl.portal.Notification" = "gtk";
-          "org.freedesktop.impl.portal.Secret" = "gnome-keyring";
-        };
-      };
 
       # Niri Nvidia rule
       environment.etc."nvidia/nvidia-application-profiles-rc.d/50-niri.json".text = ''

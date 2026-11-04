@@ -11,10 +11,10 @@
       home.packages = with pkgs; [
         nil
         nixd
-    
+
         jsonfmt
 
-        clang-tools #Clangd
+        clang-tools # Clangd
         cmake-language-server
 
         vscode-langservers-extracted

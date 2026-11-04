@@ -179,6 +179,7 @@
         ];
       };
       programs.blip.enable = true;
+      home.packages = [ self.packages.${pkgs.stdenv.hostPlatform.system}.tern ];
     };
 
   flake.homeModules.programs =

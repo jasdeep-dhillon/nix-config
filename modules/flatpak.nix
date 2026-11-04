@@ -4,10 +4,10 @@
     { pkgs, ... }:
     let
       mountOptions = [
-          "ro"
-          "x-gvfs-hide"
-          "resolve-symlinks"
-        ];
+        "ro"
+        "x-gvfs-hide"
+        "resolve-symlinks"
+      ];
     in
     {
       services.flatpak.enable = true;

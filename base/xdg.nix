@@ -6,14 +6,20 @@
       # X11's display-manager session script creates ~/.compose-cache unless
       # this is set to an absolute path. It has to be a PAM/session variable
       # because the script runs before the user's systemd session exists.
-      environment.sessionVariables.XCOMPOSECACHE =
-        "${config.users.users.${self.username}.home}/.cache/X11/xcompose";
+      environment.sessionVariables.XCOMPOSECACHE = "${
+        config.users.users.${self.username}.home
+      }/.cache/X11/xcompose";
     };
 
   flake.homeModules.xdg =
     { config, lib, ... }:
     let
-      inherit (config.xdg) cacheHome configHome dataHome stateHome;
+      inherit (config.xdg)
+        cacheHome
+        configHome
+        dataHome
+        stateHome
+        ;
       configHomeRelative = lib.removePrefix "${config.home.homeDirectory}/" configHome;
 
       sessionVariables = {
@@ -143,7 +149,7 @@
 
         # Supported through environment variables.
         xdg_move_dir "$HOME/.codex" "${configHome}/codex" 0
-    
+
         xdg_move_dir "$HOME/.dotnet" "${stateHome}/dotnet/.dotnet" 0
         xdg_move_dir "$HOME/.emacs.d" "${configHome}/emacs" 0
         xdg_move_dir "$HOME/.gemini" "${configHome}/gemini/.gemini" 0
@@ -172,7 +178,7 @@
 
         # No XDG variable: keep the data in XDG and leave a compatibility link.
         xdg_move_dir "$HOME/.crashdata" "${cacheHome}/crashdata" 1
-  
+
         xdg_move_dir "$HOME/.pki" "${dataHome}/pki" 1
 
         # Nix profiles live under $XDG_STATE_HOME with
