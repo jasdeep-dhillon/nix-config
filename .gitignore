@@ -28,5 +28,8 @@
 
 !packages/
 !packages/aosp-cursor.nix
+!packages/tern
+!packages/tern/*.gz
+
 
 keys.txt
