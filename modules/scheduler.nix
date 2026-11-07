@@ -1,10 +1,12 @@
 { ... }:
 {
   flake.nixosModules.scheduler = {
-    services.scx = {
+    services.scx-loader = {
       enable = true;
-      scheduler = "scx_lavd";
-      extraArgs = [ "--autopilot" ];
+      config = {
+        default_sched = "scx_lavd";  
+        default_mode = "Auto";
+      };
     };
   };
 }
