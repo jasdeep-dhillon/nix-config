@@ -59,6 +59,9 @@
     mitos = {
       url = "github:mitos-editor/mitos";
     };
+    autolith = {
+      url = "github:lambda-symbolics/autolith";
+    };
   };
 
   outputs =
