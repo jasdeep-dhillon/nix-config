@@ -132,11 +132,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794229842,
-        "narHash": "sha256-4+BB/q11d6GwYpmZpmNP582ClFLQ5bjB4jiR8pCP+oc=",
+        "lastModified": 1794322295,
+        "narHash": "sha256-lB2g8B0Wqux4kCv8YiHiItJjsqOhzkeDULQ3EUdWkWc=",
         "owner": "Jasdeep-Dhillon",
         "repo": "helium-flake",
-        "rev": "bc17e88312af3d7050d5f63d8c4bc40ed19d9c45",
+        "rev": "7ae4f651e8866879092234c11fd3a08f10f839e2",
         "type": "github"
       },
       "original": {
