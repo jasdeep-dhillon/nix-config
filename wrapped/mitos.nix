@@ -130,10 +130,52 @@
       config.meta.maintainers = [ wlib.maintainers.birdee ];
     }
   );
-  perSystem = { pkgs, ... }: {
+  perSystem = { pkgs, lib, ... }: {
     packages.mitos = self.wrappersModules.mitos.wrap {
       inherit pkgs;
       package = inputs.mitos.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      runtimePkgs = with pkgs; [
+
+        cmake-language-server
+
+        # GO
+        gopls
+
+        # HTML
+        vscode-langservers-extracted
+
+        # LATEX
+        texlab
+
+        # LUA
+        lua-language-server
+
+        # MARKDOWN
+        markdown-oxide
+
+        # NIX
+        nixfmt
+        nil
+
+        # PYTHON
+        basedpyright
+
+        # RUST
+        rust-analyzer
+        lldb
+
+        # TYPESCRIPT & OTHERS
+        deno
+
+        # YAML
+        yaml-language-server
+
+        # C++
+        clang-tools
+
+        # Justfile
+        just-lsp
+      ];
       settings = {
         editor = {
           bufferline = "always";
@@ -187,6 +229,156 @@
           };
         };
         theme = "catppuccin_mocha";
+      };
+      languages = {
+        language-server.deno = {
+          command = "deno";
+          args = [ "lsp" ];
+
+          environment.NO_COLOR = "1";
+
+          config.javascript = {
+            enable = true;
+            lint = true;
+            unstable = true;
+
+            suggest.imports.hosts."https://deno.land" = true;
+
+            inlayHints.enumMemberValues.enabled = true;
+            inlayHints.functionLikeReturnTypes.enabled = true;
+            inlayHints.parameterNames.enabled = "all";
+            inlayHints.parameterTypes.enabled = true;
+            inlayHints.propertyDeclarationTypes.enabled = true;
+            inlayHints.variableTypes.enabled = true;
+          };
+        };
+
+        language-server.rust-analyzer = {
+          config = {
+            cargo.features = "all";
+            check.command = "clippy";
+            completion.callable.snippets = "add_parentheses";
+            completion.excludeTraits = [ "yansi::Paint" ];
+            diagnostics.disabled = [
+              "inactive-code"
+              "unlinked-file"
+            ];
+          };
+        };
+
+        language =
+          (
+            {
+              astro = "astro";
+              css = "css";
+              html = "html";
+              javascript = "js";
+              json = "json";
+              jsonc = "jsonc";
+              jsx = "jsx";
+              markdown = "md";
+              scss = "scss";
+              svelte = "svelte";
+              tsx = "tsx";
+              typescript = "ts";
+              vue = "vue";
+              yaml = "yaml";
+            }
+            |> lib.attrsets.mapAttrs (
+              name: extension:
+              {
+                inherit name;
+
+                auto-format = true;
+                formatter.command = "deno";
+                formatter.args = [
+                  "fmt"
+                  "--unstable-component"
+                  "--ext"
+                  extension
+                  "-"
+                ];
+              }
+              //
+                lib.attrsets.optionalAttrs
+                  (lib.lists.elem name [
+                    "javascript"
+                    "jsx"
+                    "typescript"
+                    "tsx"
+                  ])
+                  {
+                    language-servers = [ "deno" ];
+                  }
+            )
+            |> lib.attrsets.attrValues
+          )
+          ++ [
+            {
+              name = "nix";
+              auto-format = true;
+              formatter.command = "nixfmt";
+            }
+
+            {
+              name = "python";
+              auto-format = true;
+              language-servers = [ "basedpyright" ];
+            }
+
+            {
+              name = "toml";
+              auto-format = true;
+            }
+
+            {
+              name = "cpp";
+              auto-format = true;
+              language-servers = [ "clangd" ];
+            }
+
+            {
+              name = "rust";
+
+              debugger.name = "lldb-dap";
+              debugger.transport = "stdio";
+              debugger.command = "lldb-dap";
+
+              debugger.templates = [
+                {
+                  name = "binary";
+                  request = "launch";
+
+                  completion = [
+                    {
+                      name = "binary";
+                      completion = "filename";
+                    }
+                  ];
+
+                  args.program = "{0}";
+                  args.initCommands =
+                    let
+                      primer = pkgs.writeText "primer.py" ''
+                        import subprocess
+                        import pathlib
+                        import lldb
+
+                        # Not hardcoding a nix store path here on purpose.
+                        rustlib_etc = pathlib.Path(subprocess.getoutput("rustc --print sysroot")) / "lib" / "rustlib" / "etc"
+                        if not rustlib_etc.exists():
+                            raise RuntimeError("Unable to determine rustc sysroot")
+
+                        # Load lldb_lookup.py and execute lldb_commands with the correct path
+                        lldb.debugger.HandleCommand(f"""command script import "{rustlib_etc / 'lldb_lookup.py'}" """)
+                        lldb.debugger.HandleCommand(f"""command source -s 0 "{rustlib_etc / 'lldb_commands'}" """)
+                      '';
+                    in
+                    [ "command script import ${primer}/primer.py" ];
+                }
+              ];
+            }
+          ];
       };
     };
   };
